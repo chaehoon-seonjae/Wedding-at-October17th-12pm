@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>신랑 ♥ 신부 결혼식에 초대합니다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F2EB;
+    --paper: #FBF8F3;
+    --terracotta: #C1684E;
+    --olive: #5C6450;
+    --gold: #C9A876;
+    --ink: #2B2722;
+    --ink-soft: #6B6258;
+    --line: rgba(43,39,34,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: var(--ink);
+    color: var(--ink);
+    font-family: 'Noto Serif KR', serif;
+    overflow-x: hidden;
+  }
+
+  @font-face {
+    font-family: 'Noto Serif KR';
+    src: local('Noto Serif KR');
+  }
+
+  #app {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--paper);
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ===== Loading ===== */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--ink);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease;
+  }
+  #loader.hide { opacity: 0; pointer-events: none; }
+  .loader-mark {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(247,242,235,0.5);
+    border-radius: 50%;
+    position: relative;
+    animation: breathe 1.8s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%,100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  /* ===== Opening (full screen photo) ===== */
+  #opening {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(43,39,34,0.05) 0%, rgba(43,39,34,0.55) 100%), 
+                #3a342c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--cream);
+    overflow: hidden;
+  }
+  #opening .photo-placeholder {
+    position: absolute;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 14px),
+      linear-gradient(160deg, #4a4138 0%, #2e2924 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #opening .photo-placeholder span {
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: rgba(247,242,235,0.4);
+    border: 1px solid rgba(247,242,235,0.25);
+    padding: 10px 18px;
+    border-radius: 2px;
+  }
+  #opening .opening-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding-bottom: 64px;
+    animation: fadeUp 1.4s ease 0.3s both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  #opening .eyebrow {
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  #opening .names {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  #opening .date-en {
+    font-family: 'EB Garamond', 'Noto Serif KR', serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    color: rgba(247,242,235,0.75);
+  }
+  .scroll-cue {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    animation: bob 2s ease-in-out infinite;
+  }
+  .scroll-cue span {
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(247,242,235,0.6);
+  }
+  .scroll-cue .line { width: 1px; height: 22px; background: rgba(247,242,235,0.4); }
+  @keyframes bob {
+    0%,100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 6px); }
+  }
+
+  /* ===== Body sections ===== */
+  main {
+    background: var(--paper);
+    padding-bottom: 40px;
+  }
+  .section {
+    padding: 64px 32px;
+    position: relative;
+  }
+  .section + .section {
+    border-top: 1px solid var(--line);
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .eyebrow-sm {
+    font-family: 'EB Garamond', 'Noto Serif KR', serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--terracotta);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: var(--ink);
+    margin-bottom: 36px;
+  }
+
+  /* hand-drawn leaf divider */
+  .divider {
+    display: flex;
+    justify-content: center;
+    margin: 6px 0 0;
+  }
+  .divider svg { width: 64px; height: 24px; }
+  .divider path {
+    stroke: var(--olive);
+    stroke-width: 1.1;
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  /* ===== Greeting ===== */
+  #greeting p {
+    font-size: 15.5px;
+    line-height: 2;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-bottom: 1.4em;
+  }
+  #greeting .signoff {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.9;
+  }
+  #greeting .signoff b { color: var(--ink); font-weight: 600; }
+
+  /* ===== Couple info ===== */
+  .couple-card {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .person-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0;
+  }
+  .person-row .role {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--gold);
+    width: 44px;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+  .person-row .info {
+    flex: 1;
+  }
+  .person-row .parents {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  .person-row .name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .person-row .call-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .person-row .call-btn:active { background: var(--cream); }
+  .person-row .call-btn svg { width: 15px; height: 15px; stroke: var(--olive); }
+  .couple-divider-row {
+    text-align: center;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 13px;
+  }
+
+  /* ===== Date / venue (ceremony) ===== */
+  .ceremony-date-display {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .ceremony-date-display .dday {
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+  }
+  .ceremony-date-display .date-main {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .ceremony-date-display .time-main {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+
+  .mini-calendar {
+    background: var(--cream);
+    border-radius: 4px;
+    padding: 18px 14px 22px;
+    margin: 0 auto 28px;
+    max-width: 280px;
+  }
+  .mini-calendar .cal-head {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+    letter-spacing: 0.03em;
+  }
+  .mini-calendar table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .mini-calendar th {
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    padding-bottom: 8px;
+  }
+  .mini-calendar td {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    padding: 6px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  }
+  .mini-calendar td.dim { color: rgba(107,98,88,0.28); }
+  .mini-calendar td.dday-cell {
+    position: relative;
+  }
+  .mini-calendar td.dday-cell .circle {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-weight: 700;
+  }
+  .mini-calendar th.sun, .mini-calendar td.sun:not(.dday-cell) { color: var(--terracotta); }
+
+  .add-calendar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 auto;
+    max-width: 280px;
+    padding: 13px 0;
+    border: 1px solid var(--olive);
+    border-radius: 4px;
+    color: var(--olive);
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    background: transparent;
+    text-decoration: none;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+  }
+  .add-calendar-btn:active { background: var(--cream); }
+  .add-calendar-btn svg { width: 15px; height: 15px; stroke: var(--olive); }
+
+  .venue-name-block {
+    text-align: center;
+    margin-top: 30px;
+  }
+  .venue-name-block .venue-name {
+    font-size: 16.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .venue-name-block .venue-hall {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  /* ===== Location section ===== */
+  .map-frame {
+    width: 100%;
+    height: 200px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #E8E2D6 0%, #DCD4C4 100%);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .map-frame .map-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(43,39,34,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(43,39,34,0.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .map-frame .pin {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -100%);
+  }
+  .map-frame .pin svg { width: 30px; height: 30px; }
+  .map-frame .pin-pulse {
+    position: absolute;
+    bottom: -3px; left: 50%;
+    transform: translateX(-50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(193,104,78,0.35);
+    animation: pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    100% { transform: translateX(-50%) scale(3.2); opacity: 0; }
+  }
+  .map-frame .map-caption {
+    position: absolute;
+    bottom: 10px; right: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 10px;
+    color: var(--ink-soft);
+    background: rgba(247,242,235,0.7);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .address-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--cream);
+    border-radius: 5px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+  }
+  .address-box .addr-text {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .address-box .copy-btn {
+    flex-shrink: 0;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 12px;
+    padding: 8px 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .address-box .copy-btn.copied { background: var(--olive); }
+
+  .nav-cta-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .nav-cta-row a {
+    flex: 1;
+    text-align: center;
+    padding: 12px 4px;
+    border-radius: 5px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-cta-row a.kakao { background: #FEE500; color: #391B1B; }
+  .nav-cta-row a.naver { background: #03C75A; color: #fff; }
+  .nav-cta-row a.tmap { background: #1B1442; color: #fff; }
+
+  .transport-info {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .transport-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .transport-item .icon-wrap {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .transport-item .icon-wrap svg { width: 18px; height: 18px; stroke: var(--olive); }
+  .transport-item .t-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .transport-item .t-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  /* ===== Gallery ===== */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .gallery-grid .g-item {
+    aspect-ratio: 1/1;
+    border-radius: 3px;
+    background:
+      repeating-linear-gradient(135deg, rgba(43,39,34,0.025) 0px, rgba(43,39,34,0.025) 2px, transparent 2px, transparent 12px),
+      linear-gradient(150deg, #E5DECE 0%, #D8CFBC 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .gallery-grid .g-item span {
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 9px;
+    color: rgba(107,98,88,0.55);
+    letter-spacing: 0.05em;
+  }
+  /* lightbox */
+  #lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,18,15,0.92);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox .lb-img {
+    width: 84%;
+    max-width: 380px;
+    aspect-ratio: 4/5;
+    border-radius: 4px;
+    background: linear-gradient(150deg, #4a4138 0%, #2e2924 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #lightbox .lb-img span { color: rgba(247,242,235,0.5); font-family:'Pretendard',sans-serif; font-size: 12px; }
+  #lightbox .lb-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cream);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* ===== Notice ===== */
+  .notice-box {
+    background: var(--cream);
+    border-radius: 6px;
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 12px;
+  }
+  .notice-item .n-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .notice-item p {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .notice-item p b { color: var(--ink); font-weight: 600; }
+
+  /* ===== Gift / Mind ===== */
+  .gift-intro {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .accordion {
+    border-top: 1px solid var(--line);
+  }
+  .accordion-item {
+    border-bottom: 1px solid var(--line);
+  }
+  .accordion-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 4px;
+    cursor: pointer;
+  }
+  .accordion-head .side-label {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .accordion-head .chev {
+    width: 10px; height: 10px;
+    border-right: 1.4px solid var(--ink-soft);
+    border-bottom: 1.4px solid var(--ink-soft);
+    transform: rotate(45deg);
+    transition: transform 0.3s;
+  }
+  .accordion-item.open .chev { transform: rotate(225deg); }
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .account-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 4px 18px;
+    gap: 10px;
+  }
+  .account-row .acc-info {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .account-row .acc-info b { color: var(--ink); font-weight: 600; }
+  .account-row .acc-copy {
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    background: transparent;
+    border-radius: 4px;
+    padding: 7px 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .account-row .acc-copy.copied { border-color: var(--olive); color: var(--olive); }
+
+  /* ===== Closing ===== */
+  #closing {
+    text-align: center;
+    padding-bottom: 90px;
+  }
+  #closing p {
+    font-size: 15px;
+    line-height: 2;
+    color: var(--ink-soft);
+  }
+  #closing .thanks-names {
+    margin-top: 26px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.03em;
+  }
+  #closing .final-mark {
+    margin-top: 40px;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+
+  /* a11y: respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: opacity 0.4s ease; transform: none !important; }
+    .scroll-cue, .loader-mark, .pin-pulse { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-mark"></div></div>
+
+<div id="app">
+  <section id="opening">
+    <div class="photo-placeholder"><span>OPENING PHOTO</span></div>
+    <div class="opening-content">
+      <div class="eyebrow">WE ARE GETTING MARRIED</div>
+      <div class="names">신랑 이름 · 신부 이름</div>
+      <div class="date-en">17 OCTOBER 2026</div>
+    </div>
+    <div class="scroll-cue">
+      <span>SCROLL</span>
+      <div class="line"></div>
+    </div>
+  </section>
+
+  <main id="invitation-body">
+
+    <!-- 1. 인삿말 -->
+    <section class="section reveal" id="greeting">
+      <div class="eyebrow-sm">INVITATION</div>
+      <div class="section-title">소중한 분들을 초대합니다</div>
+      <p>
+        같은 곳을 바라보며 걸어온 두 사람이<br>
+        이제 같은 길을 걷기로 했습니다.
+      </p>
+      <p>
+        서로의 모자란 부분을 채워주고<br>
+        함께 있을 때 가장 편안한 사람,<br>
+        그 사람과 가정을 이루게 되었습니다.
+      </p>
+      <p>
+        바쁘시더라도 오셔서<br>
+        축복해 주시면 감사하겠습니다.
+      </p>
+      <div class="divider">
+        <svg viewBox="0 0 64 24"><path d="M4 16 Q 20 2, 32 12 T 60 8 M32 12 Q 34 18 30 22"/></svg>
+      </div>
+      <div class="signoff">
+        <b>아버님 이름</b> · <b>어머님 이름</b>의 장남 <b>신랑 이름</b><br>
+        <b>아버님 이름</b> · <b>어머님 이름</b>의 장녀 <b>신부 이름</b>
+      </div>
+    </section>
+
+    <!-- 2. 신랑 신부 정보 -->
+    <section class="section reveal" id="couple">
+      <div class="eyebrow-sm">THE COUPLE</div>
+      <div class="section-title">신랑 신부를 소개합니다</div>
+      <div class="couple-card">
+        <div class="person-row">
+          <div class="role">신랑</div>
+          <div class="info">
+            <div class="parents">아버님 이름 · 어머님 이름의 장남</div>
+            <div class="name">신랑 이름</div>
+          </div>
+          <a class="call-btn" href="tel:01000000000" aria-label="신랑에게 전화">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+        </div>
+        <div class="couple-divider-row">&amp;</div>
+        <div class="person-row">
+          <div class="role">신부</div>
+          <div class="info">
+            <div class="parents">아버님 이름 · 어머님 이름의 장녀</div>
+            <div class="name">신부 이름</div>
+          </div>
+          <a class="call-btn" href="tel:01000000000" aria-label="신부에게 전화">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 예식 정보 -->
+    <section class="section reveal" id="ceremony">
+      <div class="eyebrow-sm">WEDDING DAY</div>
+      <div class="section-title">예식 안내</div>
+
+      <div class="ceremony-date-display">
+        <div class="dday" id="dday-counter">결혼식까지 D-day 계산 중</div>
+        <div class="date-main">2026년 10월 17일 토요일</div>
+        <div class="time-main">오후 12시</div>
+      </div>
+
+      <div class="mini-calendar">
+        <div class="cal-head">2026. 10. OCTOBER</div>
+        <table>
+          <thead>
+            <tr>
+              <th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="dim">27</td><td class="dim">28</td><td class="dim">29</td><td class="dim">30</td><td class="dim">1</td><td>2</td><td>3</td>
+            </tr>
+            <tr>
+              <td class="sun">4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td>
+            </tr>
+            <tr>
+              <td class="sun">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
+              <td class="dday-cell"><div class="circle">17</div></td>
+            </tr>
+            <tr>
+              <td class="sun">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
+            </tr>
+            <tr>
+              <td class="sun">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class="add-calendar-btn" id="add-calendar-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        캘린더에 일정 추가
+      </button>
+
+      <div class="venue-name-block">
+        <div class="venue-name">양재온누리교회</div>
+        <div class="venue-hall">사랑홀</div>
+      </div>
+
+    </section>
+
+    <!-- 4. 오시는 길 -->
+    <section class="section reveal" id="location">
+      <div class="eyebrow-sm">LOCATION</div>
+      <div class="section-title">오시는 길</div>
+
+      <div class="map-frame">
+        <div class="map-grid"></div>
+        <div class="pin">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 22s8-7.5 8-13a8 8 0 1 0-16 0c0 5.5 8 13 8 13z" fill="#C1684E"/>
+            <circle cx="12" cy="9" r="3" fill="#FBF8F3"/>
+          </svg>
+          <div class="pin-pulse"></div>
+        </div>
+        <div class="map-caption">지도 미리보기</div>
+      </div>
+
+      <div class="address-box">
+        <div class="addr-text">서울 서초구 양재대로12길 73<br>양재온누리교회</div>
+        <button class="copy-btn" id="copy-address-btn">주소 복사</button>
+      </div>
+
+      <div class="nav-cta-row">
+        <a class="kakao" id="kakao-link" href="#" target="_blank" rel="noopener">카카오맵</a>
+        <a class="naver" id="naver-link" href="#" target="_blank" rel="noopener">네이버맵</a>
+        <a class="tmap" id="tmap-link" href="#" target="_blank" rel="noopener">티맵</a>
+      </div>
+
+      <div class="divider">
+        <svg viewBox="0 0 64 24"><path d="M4 16 Q 20 2, 32 12 T 60 8 M32 12 Q 34 18 30 22"/></svg>
+      </div>
+
+      <div class="transport-info" style="margin-top:32px;">
+        <div class="transport-item">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><rect x="3" y="11" width="18" height="9" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="7.5" cy="17" r="1"/><circle cx="16.5" cy="17" r="1"/></svg>
+          </div>
+          <div>
+            <div class="t-title">자가용</div>
+            <div class="t-desc">
+              내비게이션에 '양재온누리교회'를 입력해 주세요.<br>
+              건물 내 주차장을 이용하실 수 있으며, 예식 안내 데스크에서 주차 등록을 도와드립니다.
+            </div>
+          </div>
+        </div>
+        <div class="transport-item">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><path d="M8 6v6M16 6v6M2 12h20M3 12l1.5 6h15L21 12M7 21h2M15 21h2"/></svg>
+          </div>
+          <div>
+            <div class="t-title">셔틀버스</div>
+            <div class="t-desc">
+              양재역 8번 출구 앞에서 예식 시작 1시간 전부터 셔틀버스가 운행됩니다.
+            </div>
+          </div>
+        </div>
+        <div class="transport-item">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><path d="M4 16V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v9M4 16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M4 16l-1 4M20 16l1 4M9 6h6"/><circle cx="7.5" cy="13" r="1"/><circle cx="16.5" cy="13" r="1"/></svg>
+          </div>
+          <div>
+            <div class="t-title">대중교통</div>
+            <div class="t-desc">
+              지하철 3호선 양재역 8번 출구에서 도보 10분 거리입니다.<br>
+              버스는 양재역 정류장에서 하차 후 도보로 이동하실 수 있습니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 갤러리 -->
+    <section class="section reveal" id="gallery">
+      <div class="eyebrow-sm">GALLERY</div>
+      <div class="section-title">두 사람의 순간들</div>
+      <div class="gallery-grid" id="gallery-grid">
+        <div class="g-item" data-idx="1"><span>PHOTO 1</span></div>
+        <div class="g-item" data-idx="2"><span>PHOTO 2</span></div>
+        <div class="g-item" data-idx="3"><span>PHOTO 3</span></div>
+        <div class="g-item" data-idx="4"><span>PHOTO 4</span></div>
+        <div class="g-item" data-idx="5"><span>PHOTO 5</span></div>
+        <div class="g-item" data-idx="6"><span>PHOTO 6</span></div>
+        <div class="g-item" data-idx="7"><span>PHOTO 7</span></div>
+        <div class="g-item" data-idx="8"><span>PHOTO 8</span></div>
+        <div class="g-item" data-idx="9"><span>PHOTO 9</span></div>
+      </div>
+    </section>
+
+    <!-- 6. 안내 사항 -->
+    <section class="section reveal" id="notice">
+      <div class="eyebrow-sm">NOTICE</div>
+      <div class="section-title">안내 사항</div>
+      <div class="notice-box">
+        <div class="notice-item">
+          <div class="n-dot"></div>
+          <p><b>식사는 오전 10시 30분부터</b> 가능합니다. 예식 종료 직후에는 식당이 혼잡할 수 있으니, 여유 있게 이용해 주세요.</p>
+        </div>
+        <div class="notice-item">
+          <div class="n-dot"></div>
+          <p>화촬영은 자유롭게 가능하지만, 예식이 진행되는 동안 <b>플래시는 자제</b>해 주시면 감사하겠습니다.</p>
+        </div>
+        <div class="notice-item">
+          <div class="n-dot"></div>
+          <p>화환은 따로 받지 않고 있습니다. 마음만으로도 충분히 감사합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. 마음 전하는 곳 -->
+    <section class="section reveal" id="gift">
+      <div class="eyebrow-sm">WITH LOVE</div>
+      <div class="section-title">마음 전하는 곳</div>
+      <p class="gift-intro">
+        참석이 어려우신 분들을 위해<br>
+        계좌번호를 안내드립니다.
+      </p>
+      <div class="accordion" id="gift-accordion">
+        <div class="accordion-item">
+          <div class="accordion-head" data-target="acc-groom">
+            <span class="side-label">신랑측</span>
+            <span class="chev"></span>
+          </div>
+          <div class="accordion-body" id="acc-groom">
+            <div class="account-row">
+              <div class="acc-info"><b>신랑 이름</b><br>○○은행 000-0000-0000</div>
+              <button class="acc-copy" data-account="0000000000000">복사</button>
+            </div>
+            <div class="account-row">
+              <div class="acc-info"><b>아버님 이름</b> (부)<br>○○은행 000-0000-0000</div>
+              <button class="acc-copy" data-account="0000000000000">복사</button>
+            </div>
+            <div class="account-row">
+              <div class="acc-info"><b>어머님 이름</b> (모)<br>○○은행 000-0000-0000</div>
+              <button class="acc-copy" data-account="0000000000000">복사</button>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-head" data-target="acc-bride">
+            <span class="side-label">신부측</span>
+            <span class="chev"></span>
+          </div>
+          <div class="accordion-body" id="acc-bride">
+            <div class="account-row">
+              <div class="acc-info"><b>신부 이름</b><br>○○은행 000-0000-0000</div>
+              <button class="acc-copy" data-account="0000000000000">복사</button>
+            </div>
+            <div class="account-row">
+              <div class="acc-info"><b>아버님 이름</b> (부)<br>○○은행 000-0000-0000</div>
+              <button class="acc-copy" data-account="0000000000000">복사</button>
+            </div>
+            <div class="account-row">
+              <div class="acc-info"><b>어머님 이름</b> (모)<br>○○은행 000-0000-0000</div>
+              <button class="acc-copy" data-account="0000000000000">복사</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 마무리 인사 -->
+    <section class="section reveal" id="closing">
+      <div class="divider" style="margin-bottom:24px;">
+        <svg viewBox="0 0 64 24"><path d="M4 16 Q 20 2, 32 12 T 60 8 M32 12 Q 34 18 30 22"/></svg>
+      </div>
+      <p>
+        저희 두 사람의 새로운 시작을<br>
+        함께해 주셔서 감사합니다.<br><br>
+        보내주신 마음 잊지 않고<br>
+        늘 행복하게 살겠습니다.
+      </p>
+      <div class="thanks-names">신랑 이름 · 신부 이름 올림</div>
+      <div class="final-mark">2026. 10. 17</div>
+    </section>
+
+  </main>
+
+</div>
+
+<div id="lightbox">
+  <div class="lb-close" id="lb-close">&times;</div>
+  <div class="lb-img" id="lb-img"><span>PHOTO PREVIEW</span></div>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hide');
+    }, 400);
+  });
+
+  // ---- scroll reveal ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---- D-day counter ----
+  function updateDday() {
+    const target = new Date('2026-10-17T12:00:00+09:00');
+    const now = new Date();
+    const diffMs = target - now;
+    const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    const el = document.getElementById('dday-counter');
+    if (!el) return;
+    if (days > 0) {
+      el.textContent = `결혼식까지 D-${days}`;
+    } else if (days === 0) {
+      el.textContent = '오늘 결혼식이 있습니다';
+    } else {
+      el.textContent = '저희 결혼식에 와주셔서 감사합니다';
+    }
+  }
+  updateDday();
+
+  // ---- Add to calendar (.ics download) ----
+  document.getElementById('add-calendar-btn').addEventListener('click', () => {
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'BEGIN:VEVENT',
+      'SUMMARY:신랑 이름 ♥ 신부 이름 결혼식',
+      'DTSTART:20261017T030000Z',
+      'DTEND:20261017T050000Z',
+      'LOCATION:양재온누리교회 사랑홀',
+      'DESCRIPTION:서울 서초구 양재대로12길 73',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'wedding.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // ---- Copy address ----
+  function copyText(text, btn, defaultLabel) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '복사 완료';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = defaultLabel;
+        btn.classList.remove('copied');
+      }, 1600);
+    }).catch(() => {
+      btn.textContent = '복사 실패';
+      setTimeout(() => { btn.textContent = defaultLabel; }, 1600);
+    });
+  }
+
+  document.getElementById('copy-address-btn').addEventListener('click', (e) => {
+    copyText('서울 서초구 양재대로12길 73 양재온누리교회', e.target, '주소 복사');
+  });
+
+  document.querySelectorAll('.acc-copy').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      copyText(e.target.getAttribute('data-account'), e.target, '복사');
+    });
+  });
+
+  // ---- Map navigation CTAs ----
+  // NOTE: 실제 위/경도와 장소 검색명으로 교체해 주세요. 현재는 예시 좌표(양재 인근)입니다.
+  const venueLat = 37.4837;
+  const venueLng = 127.0345;
+  const venueName = encodeURIComponent('양재온누리교회');
+
+  document.getElementById('kakao-link').href =
+    `https://map.kakao.com/link/map/${venueName},${venueLat},${venueLng}`;
+  document.getElementById('naver-link').href =
+    `https://map.naver.com/p/search/${venueName}`;
+  document.getElementById('tmap-link').href =
+    `tmap://search?name=${venueName}`;
+
+  // ---- Gallery lightbox ----
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  document.querySelectorAll('.g-item').forEach(item => {
+    item.addEventListener('click', () => {
+      lbImg.innerHTML = `<span>PHOTO ${item.dataset.idx} PREVIEW</span>`;
+      lightbox.classList.add('open');
+    });
+  });
+  document.getElementById('lb-close').addEventListener('click', () => {
+    lightbox.classList.remove('open');
+  });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) lightbox.classList.remove('open');
+  });
+
+  // ---- Accordion ----
+  document.querySelectorAll('.accordion-head').forEach(head => {
+    head.addEventListener('click', () => {
+      const item = head.parentElement;
+      const body = document.getElementById(head.dataset.target);
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('.accordion-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.accordion-body').style.maxHeight = null;
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+</body>
+</html>
