@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>채훈♥ 선재 결혼식에 초대합니다</title>
+<title>채훈 ♥ 선재 결혼식에 초대합니다</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -88,6 +88,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  #opening .photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  #opening .photo-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(43,39,34,0.05) 0%, rgba(43,39,34,0.8) 100%);
+    pointer-events: none;
   }
   #opening .photo-placeholder span {
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
@@ -706,7 +718,9 @@
 
 <div id="app">
   <section id="opening">
-    <div class="photo-placeholder"><span>OPENING PHOTO</span></div>
+    <div class="photo-placeholder">
+      <img src="images/main.jpeg" alt="">
+    </div>
     <div class="opening-content">
       <div class="eyebrow">WE ARE GETTING MARRIED</div>
       <div class="names">양채훈 · 임선재</div>
