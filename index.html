@@ -6,31 +6,29 @@
 <title>채훈 ♥ 선재 결혼식에 초대합니다</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #F7F2EB;
-    --paper: #FBF8F3;
-    --terracotta: #C1684E;
-    --olive: #5C6450;
-    --gold: #C9A876;
-    --ink: #2B2722;
-    --ink-soft: #6B6258;
-    --line: rgba(43,39,34,0.12);
+    --paper: #FBFAF7;   /* soft daylight off-white */
+    --panel: #F1EEE7;   /* stone panel */
+    --ink: #2C302B;     /* deep pine charcoal */
+    --ink-soft: #6E726A;/* muted sage-gray */
+    --sage: #8C9483;    /* single accent — muted sage */
+    --sage-dp: #6B7263; /* deeper sage for text accents */
+    --gold: #B8A57E;    /* a whisper of warm light, used sparingly */
+    --line: rgba(44,48,43,0.10);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 
   html, body {
-    background: var(--ink);
+    background: var(--panel);
     color: var(--ink);
     font-family: 'Noto Serif KR', serif;
+    font-weight: 400;
     overflow-x: hidden;
-  }
-
-  @font-face {
-    font-family: 'Noto Serif KR';
-    src: local('Noto Serif KR');
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   #app {
@@ -45,7 +43,7 @@
   #loader {
     position: fixed;
     inset: 0;
-    background: var(--ink);
+    background: var(--paper);
     z-index: 999;
     display: flex;
     align-items: center;
@@ -54,113 +52,131 @@
   }
   #loader.hide { opacity: 0; pointer-events: none; }
   .loader-mark {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(247,242,235,0.5);
-    border-radius: 50%;
+    width: 34px; height: 34px;
+    border: 1px solid var(--sage);
+    border-radius: 50% 50% 4px 4px;
     position: relative;
-    animation: breathe 1.8s ease-in-out infinite;
+    animation: breathe 2.2s ease-in-out infinite;
   }
   @keyframes breathe {
-    0%,100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.15); opacity: 1; }
+    0%,100% { transform: scale(0.94); opacity: 0.4; }
+    50% { transform: scale(1.06); opacity: 1; }
   }
 
-  /* ===== Opening (full screen photo) ===== */
+  /* ===== Opening (arched chapel-window portrait) ===== */
   #opening {
     position: relative;
     width: 100%;
-    height: 100vh;
-    background: linear-gradient(180deg, rgba(43,39,34,0.05) 0%, rgba(43,39,34,0.55) 100%), 
-                #3a342c;
+    min-height: 100vh;
+    background: var(--paper);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    color: var(--cream);
+    justify-content: center;
+    color: var(--ink);
     overflow: hidden;
+    padding: 56px 34px 72px;
+  }
+  #opening .open-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    color: var(--sage-dp);
+    margin-bottom: 26px;
+    animation: fadeUp 1.3s ease 0.2s both;
   }
   #opening .photo-placeholder {
-    position: absolute;
-    inset: 0;
-    background: 
-      repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 14px),
-      linear-gradient(160deg, #4a4138 0%, #2e2924 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+    aspect-ratio: 2 / 3;
+    border-radius: 999px 999px 6px 6px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #4a4a44 0%, #2e2e29 100%);
+    box-shadow: 0 18px 44px -22px rgba(44,48,43,0.55);
+    animation: fadeUp 1.5s ease 0.35s both;
   }
   #opening .photo-placeholder img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
   }
   #opening .photo-placeholder::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(43,39,34,0.05) 0%, rgba(43,39,34,0.8) 100%);
+    /* soft noon light falling from the top of the window */
+    background:
+      radial-gradient(120% 60% at 50% -8%, rgba(255,252,242,0.30) 0%, rgba(255,252,242,0) 55%),
+      linear-gradient(180deg, rgba(44,48,43,0) 60%, rgba(44,48,43,0.28) 100%);
     pointer-events: none;
-  }
-  #opening .photo-placeholder span {
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.15em;
-    color: rgba(247,242,235,0.4);
-    border: 1px solid rgba(247,242,235,0.25);
-    padding: 10px 18px;
-    border-radius: 2px;
   }
   #opening .opening-content {
     position: relative;
     z-index: 2;
     text-align: center;
-    padding-bottom: 64px;
-    animation: fadeUp 1.4s ease 0.3s both;
+    margin-top: 34px;
+    animation: fadeUp 1.5s ease 0.55s both;
   }
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  #opening .eyebrow {
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    color: var(--gold);
-    margin-bottom: 18px;
-  }
   #opening .names {
-    font-size: 30px;
+    font-size: 23px;
     font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.12em;
     line-height: 1.5;
-    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  #opening .names .amp {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--sage);
+    margin: 0 0.24em;
   }
   #opening .date-en {
-    font-family: 'EB Garamond', 'Noto Serif KR', serif;
-    font-style: italic;
-    font-size: 14px;
-    letter-spacing: 0.08em;
-    color: rgba(247,242,235,0.75);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    color: var(--ink-soft);
+    margin-top: 16px;
+    padding-top: 16px;
+    position: relative;
+  }
+  #opening .date-en::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 26px; height: 1px;
+    background: var(--sage);
   }
   .scroll-cue {
     position: absolute;
-    bottom: 22px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    animation: bob 2s ease-in-out infinite;
+    gap: 7px;
+    animation: bob 2.4s ease-in-out infinite;
   }
   .scroll-cue span {
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: rgba(247,242,235,0.6);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    color: var(--sage-dp);
   }
-  .scroll-cue .line { width: 1px; height: 22px; background: rgba(247,242,235,0.4); }
+  .scroll-cue .line { width: 1px; height: 24px; background: var(--sage); opacity: 0.7; }
   @keyframes bob {
     0%,100% { transform: translate(-50%, 0); }
     50% { transform: translate(-50%, 6px); }
@@ -172,7 +188,7 @@
     padding-bottom: 40px;
   }
   .section {
-    padding: 64px 32px;
+    padding: 76px 34px;
     position: relative;
   }
   .section + .section {
@@ -180,8 +196,8 @@
   }
   .reveal {
     opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.9s ease, transform 0.9s ease;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
   }
   .reveal.in {
     opacity: 1;
@@ -189,35 +205,39 @@
   }
 
   .eyebrow-sm {
-    font-family: 'EB Garamond', 'Noto Serif KR', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    color: var(--terracotta);
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    color: var(--sage-dp);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .section-title {
-    font-size: 19px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     text-align: center;
     color: var(--ink);
-    margin-bottom: 36px;
+    margin-bottom: 42px;
   }
 
-  /* hand-drawn leaf divider */
+  /* chapel-arch divider */
   .divider {
     display: flex;
     justify-content: center;
     margin: 6px 0 0;
   }
-  .divider svg { width: 64px; height: 24px; }
+  .divider svg { width: 60px; height: 22px; overflow: visible; }
   .divider path {
-    stroke: var(--olive);
+    stroke: var(--sage);
     stroke-width: 1.1;
     fill: none;
     stroke-linecap: round;
+  }
+  .divider circle {
+    fill: var(--gold);
+    stroke: none;
   }
 
   /* ===== Greeting ===== */
@@ -250,7 +270,7 @@
     padding: 18px 0;
   }
   .person-row .role {
-    font-family: 'EB Garamond', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 12px;
     color: var(--gold);
@@ -281,11 +301,11 @@
     text-decoration: none;
     transition: background 0.2s;
   }
-  .person-row .call-btn:active { background: var(--cream); }
-  .person-row .call-btn svg { width: 15px; height: 15px; stroke: var(--olive); }
+  .person-row .call-btn:active { background: var(--panel); }
+  .person-row .call-btn svg { width: 15px; height: 15px; stroke: var(--sage-dp); }
   .couple-divider-row {
     text-align: center;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     color: var(--gold);
     font-size: 13px;
@@ -300,7 +320,7 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
     font-size: 11px;
     letter-spacing: 0.15em;
-    color: var(--terracotta);
+    color: var(--sage-dp);
     margin-bottom: 10px;
   }
   .ceremony-date-display .date-main {
@@ -315,7 +335,7 @@
   }
 
   .mini-calendar {
-    background: var(--cream);
+    background: var(--panel);
     border-radius: 4px;
     padding: 18px 14px 22px;
     margin: 0 auto 28px;
@@ -354,7 +374,7 @@
   .mini-calendar td.dday-cell .circle {
     width: 26px; height: 26px;
     border-radius: 50%;
-    background: var(--terracotta);
+    background: var(--sage);
     color: #fff;
     display: flex;
     align-items: center;
@@ -362,7 +382,7 @@
     margin: 0 auto;
     font-weight: 700;
   }
-  .mini-calendar th.sun, .mini-calendar td.sun:not(.dday-cell) { color: var(--terracotta); }
+  .mini-calendar th.sun, .mini-calendar td.sun:not(.dday-cell) { color: var(--sage-dp); }
 
   .add-calendar-btn {
     display: flex;
@@ -372,9 +392,9 @@
     margin: 0 auto;
     max-width: 280px;
     padding: 13px 0;
-    border: 1px solid var(--olive);
+    border: 1px solid var(--sage-dp);
     border-radius: 4px;
-    color: var(--olive);
+    color: var(--sage-dp);
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
     font-size: 13.5px;
     font-weight: 500;
@@ -383,8 +403,8 @@
     cursor: pointer;
     letter-spacing: 0.01em;
   }
-  .add-calendar-btn:active { background: var(--cream); }
-  .add-calendar-btn svg { width: 15px; height: 15px; stroke: var(--olive); }
+  .add-calendar-btn:active { background: var(--panel); }
+  .add-calendar-btn svg { width: 15px; height: 15px; stroke: var(--sage-dp); }
 
   .venue-name-block {
     text-align: center;
@@ -404,49 +424,16 @@
   /* ===== Location section ===== */
   .map-frame {
     width: 100%;
-    height: 200px;
+    height: 220px;
     border-radius: 6px;
     background: linear-gradient(135deg, #E8E2D6 0%, #DCD4C4 100%);
     position: relative;
     overflow: hidden;
     margin-bottom: 18px;
   }
-  .map-frame .map-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(43,39,34,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(43,39,34,0.06) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-  .map-frame .pin {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -100%);
-  }
-  .map-frame .pin svg { width: 30px; height: 30px; }
-  .map-frame .pin-pulse {
-    position: absolute;
-    bottom: -3px; left: 50%;
-    transform: translateX(-50%);
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: rgba(193,104,78,0.35);
-    animation: pulse 1.8s ease-out infinite;
-  }
-  @keyframes pulse {
-    0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-    100% { transform: translateX(-50%) scale(3.2); opacity: 0; }
-  }
-  .map-frame .map-caption {
-    position: absolute;
-    bottom: 10px; right: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    font-size: 10px;
-    color: var(--ink-soft);
-    background: rgba(247,242,235,0.7);
-    padding: 3px 8px;
-    border-radius: 3px;
+  #kakao-map {
+    width: 100%;
+    height: 100%;
   }
 
   .address-box {
@@ -454,7 +441,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    background: var(--cream);
+    background: var(--panel);
     border-radius: 5px;
     padding: 14px 16px;
     margin-bottom: 18px;
@@ -476,7 +463,7 @@
     cursor: pointer;
     white-space: nowrap;
   }
-  .address-box .copy-btn.copied { background: var(--olive); }
+  .address-box .copy-btn.copied { background: var(--sage-dp); }
 
   .nav-cta-row {
     display: flex;
@@ -485,18 +472,33 @@
   }
   .nav-cta-row a {
     flex: 1;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
     padding: 12px 4px;
-    border-radius: 5px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
     font-size: 12.5px;
     font-weight: 600;
     text-decoration: none;
     letter-spacing: -0.01em;
+    transition: background 0.2s;
   }
-  .nav-cta-row a.kakao { background: #FEE500; color: #391B1B; }
-  .nav-cta-row a.naver { background: #03C75A; color: #fff; }
-  .nav-cta-row a.tmap { background: #1B1442; color: #fff; }
+  .nav-cta-row a:active { background: var(--panel); }
+  .nav-cta-row a::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(44,48,43,0.10);
+  }
+  .nav-cta-row a.kakao::before { background: #FEE500; }
+  .nav-cta-row a.naver::before { background: #03C75A; }
+  .nav-cta-row a.tmap::before { background: #1B1442; }
 
   .transport-info {
     display: flex;
@@ -511,13 +513,13 @@
   .transport-item .icon-wrap {
     width: 38px; height: 38px;
     border-radius: 50%;
-    background: var(--cream);
+    background: var(--panel);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .transport-item .icon-wrap svg { width: 18px; height: 18px; stroke: var(--olive); }
+  .transport-item .icon-wrap svg { width: 18px; height: 18px; stroke: var(--sage-dp); }
   .transport-item .t-title {
     font-size: 14px;
     font-weight: 600;
@@ -582,14 +584,14 @@
     border-radius: 50%;
     background: rgba(255,255,255,0.08);
     display: flex; align-items: center; justify-content: center;
-    color: var(--cream);
+    color: var(--panel);
     font-size: 20px;
     cursor: pointer;
   }
 
   /* ===== Notice ===== */
   .notice-box {
-    background: var(--cream);
+    background: var(--panel);
     border-radius: 6px;
     padding: 24px 22px;
     display: flex;
@@ -603,7 +605,7 @@
   .notice-item .n-dot {
     width: 5px; height: 5px;
     border-radius: 50%;
-    background: var(--terracotta);
+    background: var(--sage-dp);
     margin-top: 8px;
     flex-shrink: 0;
   }
@@ -677,7 +679,7 @@
     color: var(--ink-soft);
     cursor: pointer;
   }
-  .account-row .acc-copy.copied { border-color: var(--olive); color: var(--olive); }
+  .account-row .acc-copy.copied { border-color: var(--sage-dp); color: var(--sage-dp); }
 
   /* ===== Closing ===== */
   #closing {
@@ -698,7 +700,7 @@
   }
   #closing .final-mark {
     margin-top: 40px;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     color: var(--gold);
     font-size: 13px;
@@ -718,16 +720,16 @@
 
 <div id="app">
   <section id="opening">
+    <div class="open-eyebrow">The Wedding of</div>
     <div class="photo-placeholder">
-      <img src="images/main.jpeg" alt="">
+      <img src="images/main.jpeg" alt="양채훈 임선재 결혼 사진">
     </div>
     <div class="opening-content">
-      <div class="eyebrow">WE ARE GETTING MARRIED</div>
-      <div class="names">양채훈 · 임선재</div>
-      <div class="date-en">17 OCTOBER 2026</div>
+      <div class="names">양채훈<span class="amp">&amp;</span>임선재</div>
+      <div class="date-en">2026 · 10 · 17</div>
     </div>
     <div class="scroll-cue">
-      <span>SCROLL</span>
+      <span>scroll</span>
       <div class="line"></div>
     </div>
   </section>
@@ -752,7 +754,7 @@
         축복해 주시면 감사하겠습니다.
       </p>
       <div class="divider">
-        <svg viewBox="0 0 64 24"><path d="M4 16 Q 20 2, 32 12 T 60 8 M32 12 Q 34 18 30 22"/></svg>
+        <svg viewBox="0 0 60 22"><path d="M4 19 Q 30 3 56 19"/><circle cx="30" cy="8.5" r="1.7"/></svg>
       </div>
     </section>
 
@@ -843,19 +845,11 @@
       <div class="section-title">오시는 길</div>
 
       <div class="map-frame">
-        <div class="map-grid"></div>
-        <div class="pin">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M12 22s8-7.5 8-13a8 8 0 1 0-16 0c0 5.5 8 13 8 13z" fill="#C1684E"/>
-            <circle cx="12" cy="9" r="3" fill="#FBF8F3"/>
-          </svg>
-          <div class="pin-pulse"></div>
-        </div>
-        <div class="map-caption">지도 미리보기</div>
+        <div id="kakao-map"></div>
       </div>
 
       <div class="address-box">
-        <div class="addr-text">서울 서초구 양재대로12길 73<br>양재온누리교회</div>
+        <div class="addr-text">서울 서초구 바우뫼로31길 70<br>양재온누리교회</div>
         <button class="copy-btn" id="copy-address-btn">주소 복사</button>
       </div>
 
@@ -866,7 +860,7 @@
       </div>
 
       <div class="divider">
-        <svg viewBox="0 0 64 24"><path d="M4 16 Q 20 2, 32 12 T 60 8 M32 12 Q 34 18 30 22"/></svg>
+        <svg viewBox="0 0 60 22"><path d="M4 19 Q 30 3 56 19"/><circle cx="30" cy="8.5" r="1.7"/></svg>
       </div>
 
       <div class="transport-info" style="margin-top:32px;">
@@ -936,7 +930,7 @@
         </div>
         <div class="notice-item">
           <div class="n-dot"></div>
-          <p>촬영은 자유롭게 가능하지만, 예식이 진행되는 동안 <b>플래시는 자제</b>해 주시면 감사하겠습니다.</p>
+          <p>사진 촬영은 자유롭게 하셔도 좋습니다. 다만 예식이 진행되는 동안에는 <b>플래시를 자제</b>해 주시면 감사하겠습니다.</p>
         </div>
         <div class="notice-item">
           <div class="n-dot"></div>
@@ -961,12 +955,12 @@
           </div>
           <div class="accordion-body" id="acc-groom">
             <div class="account-row">
-              <div class="acc-info"><b>신랑 이름</b><br>○○은행 000-0000-0000</div>
-              <button class="acc-copy" data-account="0000000000000">복사</button>
+              <div class="acc-info"><b>양채훈</b> (신랑)<br>국민은행 074301-04-119782</div>
+              <button class="acc-copy" data-account="07430104119782">복사</button>
             </div>
             <div class="account-row">
-              <div class="acc-info"><b>어머님 이름</b> (모)<br>○○은행 000-0000-0000</div>
-              <button class="acc-copy" data-account="0000000000000">복사</button>
+              <div class="acc-info"><b>김만순</b> (어머니)<br>신한은행 110-054-068288</div>
+              <button class="acc-copy" data-account="110054068288">복사</button>
             </div>
           </div>
         </div>
@@ -977,11 +971,11 @@
           </div>
           <div class="accordion-body" id="acc-bride">
             <div class="account-row">
-              <div class="acc-info"><b>신부 임선재</b><br>농협은행 312-63054228-31</div>
+              <div class="acc-info"><b>임선재</b> (신부)<br>농협은행 312-63054228-31</div>
               <button class="acc-copy" data-account="3126305422831">복사</button>
             </div>
             <div class="account-row">
-              <div class="acc-info"><b>어머님 이름</b> (모)<br>○○은행 000-0000-0000</div>
+              <div class="acc-info"><b>강영경</b> (어머니)<br>○○은행 000-0000-0000</div>
               <button class="acc-copy" data-account="0000000000000">복사</button>
             </div>
           </div>
@@ -992,7 +986,7 @@
     <!-- 8. 마무리 인사 -->
     <section class="section reveal" id="closing">
       <div class="divider" style="margin-bottom:24px;">
-        <svg viewBox="0 0 64 24"><path d="M4 16 Q 20 2, 32 12 T 60 8 M32 12 Q 34 18 30 22"/></svg>
+        <svg viewBox="0 0 60 22"><path d="M4 19 Q 30 3 56 19"/><circle cx="30" cy="8.5" r="1.7"/></svg>
       </div>
       <p>
         저희 두 사람의 새로운 시작을<br>
@@ -1012,6 +1006,10 @@
   <div class="lb-close" id="lb-close">&times;</div>
   <div class="lb-img" id="lb-img"><span>PHOTO PREVIEW</span></div>
 </div>
+
+<!-- Kakao Maps SDK. Replace YOUR_KAKAO_JS_KEY with the JavaScript key from https://developers.kakao.com/ (내 애플리케이션 > 앱 키 > JavaScript 키). Also register your domain under 플랫폼 > Web. -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6c57a9408c7d99ae86a4c01da1a530ff"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6c57a9408c7d99ae86a4c01da1a530ff&autoload=false&libraries=services"></script>
 
 <script>
   window.addEventListener('load', () => {
@@ -1060,7 +1058,7 @@
       'DTSTART:20261017T030000Z',
       'DTEND:20261017T050000Z',
       'LOCATION:양재온누리교회 사랑홀',
-      'DESCRIPTION:서울 서초구 양재대로12길 73',
+      'DESCRIPTION:서울 서초구 바우뫼로31길 70',
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');
@@ -1100,18 +1098,55 @@
     });
   });
 
-  // ---- Map navigation CTAs ----
-  // NOTE: 실제 위/경도와 장소 검색명으로 교체해 주세요. 현재는 예시 좌표(양재 인근)입니다.
-  const venueLat = 37.4837;
-  const venueLng = 127.0345;
-  const venueName = encodeURIComponent('양재온누리교회');
+  // ---- Venue location ----
+  const venueAddress = '서울 서초구 바우뫼로31길 70';
+  const venueDisplayName = '양재온누리교회';
+  const venueName = encodeURIComponent(venueDisplayName);
+  // 초기 fallback 좌표 (지오코더 실패 시 표시). 지오코더가 성공하면 실제 주소로 이동합니다.
+  let venueLat = 37.4759;
+  let venueLng = 127.0362;
 
-  document.getElementById('kakao-link').href =
-    `https://map.kakao.com/link/map/${venueName},${venueLat},${venueLng}`;
-  document.getElementById('naver-link').href =
-    `https://map.naver.com/p/search/${venueName}`;
-  document.getElementById('tmap-link').href =
-    `tmap://search?name=${venueName}`;
+  // ---- Kakao Map embed ----
+  if (typeof kakao !== 'undefined' && kakao.maps) {
+    kakao.maps.load(() => {
+      const container = document.getElementById('kakao-map');
+      const map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(venueLat, venueLng),
+        level: 3,
+        draggable: true,
+      });
+
+      const placeMarker = (lat, lng) => {
+        const pos = new kakao.maps.LatLng(lat, lng);
+        map.setCenter(pos);
+        const marker = new kakao.maps.Marker({ map, position: pos });
+        const infoContent =
+          `<div style="padding:6px 10px;font-size:12px;font-family:'Pretendard',sans-serif;color:#2B2722;white-space:nowrap;">${venueDisplayName}</div>`;
+        new kakao.maps.InfoWindow({ content: infoContent, removable: false }).open(map, marker);
+      };
+
+      const geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(venueAddress, (result, status) => {
+        if (status === kakao.maps.services.Status.OK && result[0]) {
+          venueLat = parseFloat(result[0].y);
+          venueLng = parseFloat(result[0].x);
+        }
+        placeMarker(venueLat, venueLng);
+        wireExternalMapLinks();
+      });
+    });
+  } else {
+    wireExternalMapLinks();
+  }
+
+  function wireExternalMapLinks() {
+    document.getElementById('kakao-link').href =
+      `https://map.kakao.com/link/map/${venueName},${venueLat},${venueLng}`;
+    document.getElementById('naver-link').href =
+      `https://map.naver.com/p/search/${venueName}`;
+    document.getElementById('tmap-link').href =
+      `tmap://search?name=${venueName}`;
+  }
 
   // ---- Gallery lightbox ----
   const lightbox = document.getElementById('lightbox');
