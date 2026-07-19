@@ -42,6 +42,7 @@
 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 
+  html { scroll-behavior: smooth; }
   html, body {
     background: var(--panel);
     color: var(--ink);
@@ -51,6 +52,7 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
   #app {
     max-width: 480px;
@@ -181,6 +183,35 @@
     to { opacity: 1; transform: scale(1.06); }
   }
 
+  /* ===== Sticky top navigation ===== */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 15px 10px;
+    background: rgba(251,250,247,0.92);
+    -webkit-backdrop-filter: saturate(1.1) blur(10px);
+    backdrop-filter: saturate(1.1) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-nav a {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 11.5px;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 5px 4px;
+    transition: color 0.2s;
+  }
+  .site-nav a:active { color: var(--sage-dp); }
+  /* keep section headings clear of the sticky bar */
+  section[id] { scroll-margin-top: 58px; }
+
   /* ===== Body sections ===== */
   main {
     background: var(--paper);
@@ -239,7 +270,18 @@
     stroke: none;
   }
 
-  /* ===== Greeting ===== */
+  /* ===== Greeting (INVITATION + couple share one warm panel) ===== */
+  #greeting.invitation-block {
+    background: var(--panel);
+    padding-bottom: 64px;
+  }
+  .eyebrow-sm.gold { color: var(--gold); }
+  #greeting .couple-card {
+    margin-top: 34px;
+  }
+  #greeting .person-row + .person-row {
+    border-top: 1px solid var(--line);
+  }
   #greeting p {
     font-size: 15.5px;
     line-height: 2;
@@ -735,11 +777,18 @@
     </div>
   </section>
 
+  <nav class="site-nav" aria-label="섹션 바로가기">
+    <a href="#ceremony">예식 안내</a>
+    <a href="#location">오시는 길</a>
+    <a href="#gallery">사진첩</a>
+    <a href="#gift">마음을 전하는 곳</a>
+  </nav>
+
   <main id="invitation-body">
 
-    <!-- 1. 인삿말 -->
-    <section class="section reveal" id="greeting">
-      <div class="eyebrow-sm">INVITATION</div>
+    <!-- 1. 인삿말 + 신랑 신부 정보 -->
+    <section class="section reveal invitation-block" id="greeting">
+      <div class="eyebrow-sm gold">INVITATION</div>
       <div class="section-title">소중한 분들을 초대합니다</div>
       <p>
         같은 곳을 바라보며 걸어온 두 사람이<br>
@@ -757,13 +806,7 @@
       <div class="divider">
         <svg viewBox="0 0 60 22"><path d="M4 19 Q 30 3 56 19"/><circle cx="30" cy="8.5" r="1.7"/></svg>
       </div>
-    </section>
-
-    <!-- 2. 신랑 신부 정보 -->
-    <section class="section reveal" id="couple">
-      <div class="eyebrow-sm">THE COUPLE</div>
-      <div class="section-title">신랑 신부를 소개합니다</div>
-      <div class="couple-card">
+      <div class="couple-card" id="couple">
         <div class="person-row">
           <div class="role">신랑</div>
           <div class="info">
@@ -774,7 +817,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           </a>
         </div>
-        <div class="couple-divider-row">&amp;</div>
         <div class="person-row">
           <div class="role">신부</div>
           <div class="info">
