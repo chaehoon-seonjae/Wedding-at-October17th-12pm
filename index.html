@@ -84,123 +84,101 @@
     50% { transform: scale(1.06); opacity: 1; }
   }
 
-  /* ===== Opening (arched chapel-window portrait) ===== */
+  /* ===== Opening (full-bleed monochrome hero) ===== */
   #opening {
     position: relative;
     width: 100%;
     min-height: 100vh;
-    background: var(--paper);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink);
+    background: #111;
+    color: #fff;
     overflow: hidden;
-    padding: 56px 34px 72px;
   }
-  #opening .open-eyebrow {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 16px;
-    letter-spacing: 0.18em;
-    color: var(--sage-dp);
-    margin-bottom: 26px;
-    animation: fadeUp 1.3s ease 0.2s both;
+  /* blurred grayscale portrait behind everything */
+  #opening .hero-bg {
+    position: absolute;
+    inset: -6%;               /* over-scan so blur has no bald edges */
+    background: url('images/main.jpeg') center 28% / cover no-repeat;
+    filter: grayscale(100%) brightness(0.62) contrast(1.02) blur(4px);
+    transform: scale(1.06);
+    animation: heroReveal 1.8s ease both;
   }
-  #opening .photo-placeholder {
-    position: relative;
-    width: 100%;
-    max-width: 260px;
-    aspect-ratio: 2 / 3;
-    border-radius: 999px 999px 6px 6px;
-    overflow: hidden;
-    background: linear-gradient(160deg, #4a4a44 0%, #2e2e29 100%);
-    box-shadow: 0 18px 44px -22px rgba(44,48,43,0.55);
-    animation: fadeUp 1.5s ease 0.35s both;
-  }
-  #opening .photo-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  #opening .photo-placeholder::after {
-    content: '';
+  #opening .hero-overlay {
     position: absolute;
     inset: 0;
-    /* soft noon light falling from the top of the window */
     background:
-      radial-gradient(120% 60% at 50% -8%, rgba(255,252,242,0.30) 0%, rgba(255,252,242,0) 55%),
-      linear-gradient(180deg, rgba(44,48,43,0) 60%, rgba(44,48,43,0.28) 100%);
+      linear-gradient(180deg, rgba(10,10,10,0.58) 0%, rgba(10,10,10,0.30) 38%, rgba(10,10,10,0.72) 100%);
     pointer-events: none;
   }
-  #opening .opening-content {
+  #opening .hero-inner {
     position: relative;
     z-index: 2;
-    text-align: center;
-    margin-top: 34px;
-    animation: fadeUp 1.5s ease 0.55s both;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 72px 36px 54px;
   }
+
+  /* top-left countdown */
+  #opening .hero-countdown {
+    padding-left: 22px;
+    border-left: 2px solid rgba(255,255,255,0.9);
+    animation: fadeUp 1.5s ease 0.5s both;
+  }
+  #opening .hero-countdown > span {
+    display: block;
+    white-space: nowrap;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(30px, 8.4vw, 40px);
+    line-height: 1.42;
+    letter-spacing: 0.01em;
+    color: #fff;
+    text-shadow: 0 1px 18px rgba(0,0,0,0.45);
+  }
+  #opening .hero-countdown .cd-num { font-weight: 400; margin-right: 0.06em; }
+
+  /* bottom-center identity block */
+  #opening .hero-footer {
+    text-align: center;
+    animation: fadeUp 1.6s ease 0.8s both;
+  }
+  #opening .hero-names {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: #fff;
+    text-shadow: 0 1px 16px rgba(0,0,0,0.5);
+  }
+  #opening .hero-names .heart {
+    color: var(--sage);
+    margin: 0 0.5em;
+    font-size: 15px;
+  }
+  #opening .hero-date {
+    margin-top: 22px;
+    font-size: 13.5px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 1px 14px rgba(0,0,0,0.5);
+  }
+  #opening .hero-venue {
+    margin-top: 6px;
+    font-size: 13.5px;
+    letter-spacing: 0.03em;
+    color: rgba(255,255,255,0.82);
+    text-shadow: 0 1px 14px rgba(0,0,0,0.5);
+  }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  #opening .names {
-    font-size: 23px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-  #opening .names .amp {
-    display: inline-block;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    color: var(--sage);
-    margin: 0 0.24em;
-  }
-  #opening .date-en {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.26em;
-    color: var(--ink-soft);
-    margin-top: 16px;
-    padding-top: 16px;
-    position: relative;
-  }
-  #opening .date-en::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 26px; height: 1px;
-    background: var(--sage);
-  }
-  .scroll-cue {
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    animation: bob 2.4s ease-in-out infinite;
-  }
-  .scroll-cue span {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 12px;
-    letter-spacing: 0.28em;
-    color: var(--sage-dp);
-  }
-  .scroll-cue .line { width: 1px; height: 24px; background: var(--sage); opacity: 0.7; }
-  @keyframes bob {
-    0%,100% { transform: translate(-50%, 0); }
-    50% { transform: translate(-50%, 6px); }
+  @keyframes heroReveal {
+    from { opacity: 0; transform: scale(1.12); }
+    to { opacity: 1; transform: scale(1.06); }
   }
 
   /* ===== Body sections ===== */
@@ -741,17 +719,19 @@
 
 <div id="app">
   <section id="opening">
-    <div class="open-eyebrow">The Wedding of</div>
-    <div class="photo-placeholder">
-      <img src="images/main.jpeg" alt="양채훈 임선재 결혼 사진">
-    </div>
-    <div class="opening-content">
-      <div class="names">양채훈<span class="amp">&amp;</span>임선재</div>
-      <div class="date-en">2026 · 10 · 17</div>
-    </div>
-    <div class="scroll-cue">
-      <span>scroll</span>
-      <div class="line"></div>
+    <div class="hero-bg" role="img" aria-label="양채훈 임선재 결혼 사진"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-countdown" id="hero-countdown" aria-live="polite">
+        <span class="cd-days">&nbsp;</span>
+        <span class="cd-hours">&nbsp;</span>
+        <span class="cd-mins">만나요</span>
+      </div>
+      <div class="hero-footer">
+        <div class="hero-names">양채훈<span class="heart">&hearts;</span>임선재</div>
+        <div class="hero-date">2026년 10월 17일 토요일 오후 12시</div>
+        <div class="hero-venue">양재 온누리교회 사랑홀</div>
+      </div>
     </div>
   </section>
 
@@ -1038,6 +1018,32 @@
       document.getElementById('loader').classList.add('hide');
     }, 400);
   });
+
+  // ---- Hero countdown (N일 N시간 N분 후 만나요) ----
+  const WEDDING_AT = new Date('2026-10-17T12:00:00+09:00');
+  function updateCountdown() {
+    const cd = document.getElementById('hero-countdown');
+    if (!cd) return;
+    let diff = WEDDING_AT - new Date();
+    const dEl = cd.querySelector('.cd-days');
+    const hEl = cd.querySelector('.cd-hours');
+    const mEl = cd.querySelector('.cd-mins');
+    if (diff <= 0) {
+      dEl.textContent = '';
+      hEl.textContent = '';
+      mEl.innerHTML = '오늘, 만나요';
+      return;
+    }
+    const DAY = 864e5, HOUR = 36e5, MIN = 6e4;
+    const days = Math.floor(diff / DAY); diff -= days * DAY;
+    const hours = Math.floor(diff / HOUR); diff -= hours * HOUR;
+    const mins = Math.floor(diff / MIN);
+    dEl.innerHTML = `<span class="cd-num">${days}</span>일`;
+    hEl.innerHTML = `<span class="cd-num">${hours}</span>시간`;
+    mEl.innerHTML = `<span class="cd-num">${mins}</span>분 후 만나요`;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 20000);
 
   // ---- scroll reveal ----
   const revealEls = document.querySelectorAll('.reveal');
