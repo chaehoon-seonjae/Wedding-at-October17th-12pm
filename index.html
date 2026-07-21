@@ -183,10 +183,14 @@
     to { opacity: 1; transform: scale(1.06); }
   }
 
-  /* ===== Sticky top navigation ===== */
+  /* ===== Fixed top navigation (appears after the hero) ===== */
   .site-nav {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    width: 100%;
+    max-width: 480px;
     z-index: 50;
     display: flex;
     justify-content: space-evenly;
@@ -196,6 +200,17 @@
     -webkit-backdrop-filter: saturate(1.1) blur(10px);
     backdrop-filter: saturate(1.1) blur(10px);
     border-bottom: 1px solid var(--line);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+  .site-nav.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-nav { transition: opacity 0.3s ease; }
   }
   .site-nav a {
     font-family: 'Noto Serif KR', serif;
@@ -1086,6 +1101,19 @@
   }
   updateCountdown();
   setInterval(updateCountdown, 20000);
+
+  // ---- Show fixed nav after leaving the hero ----
+  const siteNav = document.querySelector('.site-nav');
+  const openingEl = document.getElementById('opening');
+  function updateNavVisibility() {
+    if (!siteNav || !openingEl) return;
+    // 히어로 높이의 약 80%를 지나면 네비게이션을 노출
+    const threshold = openingEl.offsetHeight * 0.8;
+    siteNav.classList.toggle('visible', window.scrollY >= threshold);
+  }
+  updateNavVisibility();
+  window.addEventListener('scroll', updateNavVisibility, { passive: true });
+  window.addEventListener('resize', updateNavVisibility);
 
   // ---- scroll reveal ----
   const revealEls = document.querySelectorAll('.reveal');
