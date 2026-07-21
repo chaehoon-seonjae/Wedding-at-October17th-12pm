@@ -30,7 +30,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FBFAF7;   /* soft daylight off-white */
+    --paper: #FFFFFF;   /* clean white */
     --panel: #F1EEE7;   /* stone panel */
     --ink: #2C302B;     /* deep pine charcoal */
     --ink-soft: #6E726A;/* muted sage-gray */
@@ -287,7 +287,7 @@
 
   /* ===== Greeting (INVITATION + couple share one warm panel) ===== */
   #greeting.invitation-block {
-    background: var(--panel);
+    background: var(--paper);
     padding-bottom: 64px;
   }
   .eyebrow-sm.gold { color: var(--gold); }
@@ -372,7 +372,7 @@
   .ceremony-head {
     margin: 0 -34px 54px;
     padding: 46px 34px;
-    background: var(--panel);
+    background: var(--paper);
     text-align: center;
   }
   .ceremony-head .eyebrow-sm { margin-bottom: 12px; }
@@ -654,7 +654,7 @@
 
   /* ===== Notice ===== */
   .notice-box {
-    background: var(--panel);
+    background: rgba(192,192,192,0.8);
     border-radius: 6px;
     padding: 24px 22px;
     display: flex;
@@ -676,6 +676,7 @@
     font-size: 13.5px;
     line-height: 1.75;
     color: var(--ink-soft);
+    word-break: keep-all;
   }
   .notice-item p b { color: var(--ink); font-weight: 600; }
 
