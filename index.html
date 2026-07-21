@@ -37,6 +37,7 @@
     --sage: #8C9483;    /* single accent — muted sage */
     --sage-dp: #6B7263; /* deeper sage for text accents */
     --gold: #B8A57E;    /* a whisper of warm light, used sparingly */
+    --rose: #C68C85;    /* muted dusty rose for weekend accents */
     --line: rgba(44,48,43,0.10);
   }
 
@@ -367,77 +368,82 @@
   }
 
   /* ===== Date / venue (ceremony) ===== */
+  #ceremony { padding-top: 36px; border-top: none; }
+  .ceremony-head {
+    margin: 0 -34px 54px;
+    padding: 46px 34px;
+    background: var(--panel);
+    text-align: center;
+  }
+  .ceremony-head .eyebrow-sm { margin-bottom: 12px; }
+  .ceremony-head .section-title { margin-bottom: 0; }
+
   .ceremony-date-display {
     text-align: center;
-    margin-bottom: 28px;
-  }
-  .ceremony-date-display .dday {
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--sage-dp);
-    margin-bottom: 10px;
+    margin-bottom: 44px;
   }
   .ceremony-date-display .date-main {
-    font-size: 22px;
+    font-size: 27px;
     font-weight: 700;
     color: var(--ink);
-    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+    margin-bottom: 10px;
   }
   .ceremony-date-display .time-main {
-    font-size: 14.5px;
+    font-size: 17px;
     color: var(--ink-soft);
   }
 
   .mini-calendar {
-    background: var(--panel);
-    border-radius: 4px;
-    padding: 18px 14px 22px;
-    margin: 0 auto 28px;
-    max-width: 280px;
-  }
-  .mini-calendar .cal-head {
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 14px;
-    letter-spacing: 0.03em;
+    background: transparent;
+    padding: 20px 2px;
+    margin: 0 auto 44px;
+    max-width: 340px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
   .mini-calendar table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
   }
   .mini-calendar th {
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    font-size: 10.5px;
+    font-size: 12px;
     color: var(--ink-soft);
     font-weight: 500;
-    padding-bottom: 8px;
+    padding-bottom: 14px;
   }
   .mini-calendar td {
     text-align: center;
-    font-size: 12.5px;
-    color: var(--ink-soft);
-    padding: 6px 0;
+    font-size: 13.5px;
+    color: var(--ink);
+    padding: 9px 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   }
   .mini-calendar td.dim { color: rgba(107,98,88,0.28); }
-  .mini-calendar td.dday-cell {
+  .mini-calendar td.dday-cell { position: relative; }
+  .mini-calendar td.dday-cell .heart-day {
     position: relative;
-  }
-  .mini-calendar td.dday-cell .circle {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    background: var(--sage);
-    color: #fff;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
+    width: 30px; height: 30px;
     font-weight: 700;
+    color: var(--ink);
   }
-  .mini-calendar th.sun, .mini-calendar td.sun:not(.dday-cell) { color: var(--sage-dp); }
+  .mini-calendar td.dday-cell .heart-day svg {
+    position: absolute;
+    left: 50%; top: 52%;
+    transform: translate(-50%, -50%);
+    width: 30px; height: 28px;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.3;
+    stroke-linejoin: round;
+  }
+  .mini-calendar th.sun, .mini-calendar td.sun:not(.dday-cell) { color: var(--rose); }
+  .mini-calendar th.sat { color: var(--rose); }
 
   .add-calendar-btn {
     display: flex;
@@ -445,11 +451,12 @@
     justify-content: center;
     gap: 8px;
     margin: 0 auto;
-    max-width: 280px;
-    padding: 13px 0;
-    border: 1px solid var(--sage-dp);
-    border-radius: 4px;
-    color: var(--sage-dp);
+    width: 100%;
+    max-width: 200px;
+    padding: 14px 0;
+    border: 1px solid rgba(44,48,43,0.24);
+    border-radius: 6px;
+    color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
     font-size: 13.5px;
     font-weight: 500;
@@ -459,7 +466,7 @@
     letter-spacing: 0.01em;
   }
   .add-calendar-btn:active { background: var(--panel); }
-  .add-calendar-btn svg { width: 15px; height: 15px; stroke: var(--sage-dp); }
+  .add-calendar-btn svg { width: 15px; height: 15px; stroke: var(--ink); }
 
   .venue-name-block {
     text-align: center;
@@ -875,21 +882,21 @@
 
     <!-- 3. 예식 정보 -->
     <section class="section reveal" id="ceremony">
-      <div class="eyebrow-sm">WEDDING DAY</div>
-      <div class="section-title">예식 안내</div>
+      <div class="ceremony-head">
+        <div class="eyebrow-sm">WEDDING DAY</div>
+        <div class="section-title">예식 안내</div>
+      </div>
 
       <div class="ceremony-date-display">
-        <div class="dday" id="dday-counter">결혼식까지 D-day 계산 중</div>
-        <div class="date-main">2026년 10월 17일 토요일</div>
-        <div class="time-main">오후 12시</div>
+        <div class="date-main">2026년 10월 17일</div>
+        <div class="time-main">토요일 낮 12시</div>
       </div>
 
       <div class="mini-calendar">
-        <div class="cal-head">2026. 10. OCTOBER</div>
         <table>
           <thead>
             <tr>
-              <th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+              <th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class="sat">토</th>
             </tr>
           </thead>
           <tbody>
@@ -901,7 +908,7 @@
             </tr>
             <tr>
               <td class="sun">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
-              <td class="dday-cell"><div class="circle">17</div></td>
+              <td class="dday-cell"><span class="heart-day"><svg viewBox="0 0 32 30" aria-hidden="true"><path d="M16 26.5C16 26.5 3.5 18.8 3.5 10.6 3.5 6.4 6.7 3.3 10.2 3.3c2.4 0 4.5 1.4 5.8 3.5 1.3-2.1 3.4-3.5 5.8-3.5 3.5 0 6.7 3.1 6.7 7.3 0 8.2-12.5 15.9-12.5 15.9z"/></svg>17</span></td>
             </tr>
             <tr>
               <td class="sun">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
@@ -915,13 +922,8 @@
 
       <button class="add-calendar-btn" id="add-calendar-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        캘린더에 일정 추가
+        캘린더에 추가하기
       </button>
-
-      <div class="venue-name-block">
-        <div class="venue-name">양재온누리교회</div>
-        <div class="venue-hall">사랑홀</div>
-      </div>
 
     </section>
 
