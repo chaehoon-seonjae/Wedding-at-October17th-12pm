@@ -230,7 +230,6 @@
   /* ===== Body sections ===== */
   main {
     background: var(--paper);
-    padding-bottom: 40px;
   }
   .section {
     padding: 76px 34px;
@@ -738,30 +737,58 @@
   }
   .account-row .acc-copy.copied { border-color: var(--sage-dp); color: var(--sage-dp); }
 
-  /* ===== Closing ===== */
+  /* ===== Closing (full-bleed B&W photo finale) ===== */
   #closing {
-    text-align: center;
-    padding-bottom: 90px;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 0;
+    background: #565a5e;   /* soft gray matching the portrait backdrop */
+    overflow: hidden;
   }
-  #closing p {
-    font-size: 15px;
-    line-height: 2;
-    color: var(--ink-soft);
+  #closing .closing-photo {
+    position: absolute;
+    inset: 0;
+    background: url('images/thumbnail.jpeg') center bottom / cover no-repeat;
+    filter: grayscale(100%) contrast(1.02);
+  }
+  #closing .closing-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(48,50,53,0.82) 0%,
+      rgba(50,52,55,0.55) 22%,
+      rgba(52,54,57,0.12) 40%,
+      rgba(52,54,57,0) 52%);
+    pointer-events: none;
+  }
+  #closing .closing-inner {
+    position: relative;
+    z-index: 2;
+    padding: 84px 36px 0;
+    text-align: left;
+  }
+  #closing .closing-msg {
+    font-size: 15.5px;
+    line-height: 1.95;
+    color: rgba(255,255,255,0.9);
+    word-break: keep-all;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.4);
   }
   #closing .thanks-names {
-    margin-top: 26px;
+    margin-top: 28px;
     font-size: 16px;
     font-weight: 600;
-    color: var(--ink);
+    color: #fff;
     letter-spacing: 0.03em;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.4);
   }
   #closing .final-mark {
-    margin-top: 40px;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--gold);
-    font-size: 13px;
-    letter-spacing: 0.1em;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.72);
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.4);
   }
 
   /* a11y: respect reduced motion */
@@ -1043,18 +1070,19 @@
     </section>
 
     <!-- 8. 마무리 인사 -->
-    <section class="section reveal" id="closing">
-      <div class="divider" style="margin-bottom:24px;">
-        <svg viewBox="0 0 60 22"><path d="M4 19 Q 30 3 56 19"/><circle cx="30" cy="8.5" r="1.7"/></svg>
+    <section class="reveal" id="closing">
+      <div class="closing-photo" role="img" aria-label="양채훈 임선재 결혼 사진"></div>
+      <div class="closing-overlay"></div>
+      <div class="closing-inner">
+        <p class="closing-msg">
+          저희 두 사람의 새로운 시작을<br>
+          함께해 주셔서 감사합니다.<br><br>
+          보내주신 마음 잊지 않고<br>
+          늘 행복하게 살겠습니다.
+        </p>
+        <div class="thanks-names">양채훈 · 임선재 올림</div>
+        <div class="final-mark">2026. 10. 17</div>
       </div>
-      <p>
-        저희 두 사람의 새로운 시작을<br>
-        함께해 주셔서 감사합니다.<br><br>
-        보내주신 마음 잊지 않고<br>
-        늘 행복하게 살겠습니다.
-      </p>
-      <div class="thanks-names">양채훈 · 임선재 올림</div>
-      <div class="final-mark">2026. 10. 17</div>
     </section>
 
   </main>
