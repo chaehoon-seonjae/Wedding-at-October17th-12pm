@@ -604,20 +604,18 @@
   .gallery-grid .g-item {
     aspect-ratio: 1/1;
     border-radius: 3px;
-    background:
-      repeating-linear-gradient(135deg, rgba(43,39,34,0.025) 0px, rgba(43,39,34,0.025) 2px, transparent 2px, transparent 12px),
-      linear-gradient(150deg, #E5DECE 0%, #D8CFBC 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(150deg, #E5DECE 0%, #D8CFBC 100%);
     cursor: pointer;
   }
-  .gallery-grid .g-item span {
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    font-size: 9px;
-    color: rgba(107,98,88,0.55);
-    letter-spacing: 0.05em;
+  .gallery-grid .g-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
   }
+  .gallery-grid .g-item:hover img { transform: scale(1.05); }
   /* lightbox */
   #lightbox {
     position: fixed;
@@ -630,16 +628,16 @@
   }
   #lightbox.open { display: flex; }
   #lightbox .lb-img {
-    width: 84%;
-    max-width: 380px;
-    aspect-ratio: 4/5;
-    border-radius: 4px;
-    background: linear-gradient(150deg, #4a4138 0%, #2e2924 100%);
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  #lightbox .lb-img span { color: rgba(247,242,235,0.5); font-family:'Pretendard',sans-serif; font-size: 12px; }
+  #lightbox .lb-img img {
+    max-width: 90vw;
+    max-height: 86vh;
+    border-radius: 4px;
+    object-fit: contain;
+  }
   #lightbox .lb-close {
     position: absolute;
     top: 20px; right: 20px;
@@ -996,15 +994,19 @@
       <div class="eyebrow-sm">GALLERY</div>
       <div class="section-title">두 사람의 순간들</div>
       <div class="gallery-grid" id="gallery-grid">
-        <div class="g-item" data-idx="1"><span>PHOTO 1</span></div>
-        <div class="g-item" data-idx="2"><span>PHOTO 2</span></div>
-        <div class="g-item" data-idx="3"><span>PHOTO 3</span></div>
-        <div class="g-item" data-idx="4"><span>PHOTO 4</span></div>
-        <div class="g-item" data-idx="5"><span>PHOTO 5</span></div>
-        <div class="g-item" data-idx="6"><span>PHOTO 6</span></div>
-        <div class="g-item" data-idx="7"><span>PHOTO 7</span></div>
-        <div class="g-item" data-idx="8"><span>PHOTO 8</span></div>
-        <div class="g-item" data-idx="9"><span>PHOTO 9</span></div>
+        <div class="g-item" data-idx="1"><img src="images/photos/1.jpg" alt="웨딩 사진 1" loading="lazy"></div>
+        <div class="g-item" data-idx="2"><img src="images/photos/2.jpg" alt="웨딩 사진 2" loading="lazy"></div>
+        <div class="g-item" data-idx="3"><img src="images/photos/3.jpg" alt="웨딩 사진 3" loading="lazy"></div>
+        <div class="g-item" data-idx="4"><img src="images/photos/4.jpg" alt="웨딩 사진 4" loading="lazy"></div>
+        <div class="g-item" data-idx="5"><img src="images/photos/5.jpg" alt="웨딩 사진 5" loading="lazy"></div>
+        <div class="g-item" data-idx="6"><img src="images/photos/6.jpg" alt="웨딩 사진 6" loading="lazy"></div>
+        <div class="g-item" data-idx="7"><img src="images/photos/7.jpg" alt="웨딩 사진 7" loading="lazy"></div>
+        <div class="g-item" data-idx="8"><img src="images/photos/8.jpg" alt="웨딩 사진 8" loading="lazy"></div>
+        <div class="g-item" data-idx="9"><img src="images/photos/9.jpg" alt="웨딩 사진 9" loading="lazy"></div>
+        <div class="g-item" data-idx="10"><img src="images/photos/10.jpg" alt="웨딩 사진 10" loading="lazy"></div>
+        <div class="g-item" data-idx="11"><img src="images/photos/11.jpg" alt="웨딩 사진 11" loading="lazy"></div>
+        <div class="g-item" data-idx="12"><img src="images/photos/12.jpg" alt="웨딩 사진 12" loading="lazy"></div>
+        <div class="g-item" data-idx="13"><img src="images/photos/13.jpg" alt="웨딩 사진 13" loading="lazy"></div>
       </div>
     </section>
 
@@ -1094,7 +1096,7 @@
 
 <div id="lightbox">
   <div class="lb-close" id="lb-close">&times;</div>
-  <div class="lb-img" id="lb-img"><span>PHOTO PREVIEW</span></div>
+  <div class="lb-img" id="lb-img"><img src="" alt="웨딩 사진"></div>
 </div>
 
 <!-- Kakao Maps SDK. Replace YOUR_KAKAO_JS_KEY with the JavaScript key from https://developers.kakao.com/ (내 애플리케이션 > 앱 키 > JavaScript 키). Also register your domain under 플랫폼 > Web. -->
@@ -1279,10 +1281,12 @@
 
   // ---- Gallery lightbox ----
   const lightbox = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img');
+  const lbImg = document.querySelector('#lb-img img');
   document.querySelectorAll('.g-item').forEach(item => {
     item.addEventListener('click', () => {
-      lbImg.innerHTML = `<span>PHOTO ${item.dataset.idx} PREVIEW</span>`;
+      const img = item.querySelector('img');
+      lbImg.src = img.getAttribute('src');
+      lbImg.alt = img.getAttribute('alt');
       lightbox.classList.add('open');
     });
   });
