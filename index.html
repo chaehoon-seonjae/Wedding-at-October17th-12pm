@@ -675,16 +675,15 @@
     background: rgba(255,255,255,0.08);
     display: flex; align-items: center; justify-content: center;
     color: var(--panel);
-    font-size: 28px;
-    line-height: 1;
     cursor: pointer;
     user-select: none;
     transition: background 0.2s ease;
     z-index: 2;
   }
+  #lightbox .lb-nav svg { width: 20px; height: 20px; display: block; }
   #lightbox .lb-nav:hover { background: rgba(255,255,255,0.18); }
-  #lightbox .lb-prev { left: 16px; padding-right: 3px; }
-  #lightbox .lb-next { right: 16px; padding-left: 3px; }
+  #lightbox .lb-prev { left: 16px; }
+  #lightbox .lb-next { right: 16px; }
 
   /* ===== Notice ===== */
   .notice-box {
@@ -1133,9 +1132,13 @@
 
 <div id="lightbox">
   <div class="lb-close" id="lb-close">&times;</div>
-  <div class="lb-nav lb-prev" id="lb-prev" aria-label="이전 사진">&#8249;</div>
+  <div class="lb-nav lb-prev" id="lb-prev" aria-label="이전 사진">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
   <div class="lb-img" id="lb-img"></div>
-  <div class="lb-nav lb-next" id="lb-next" aria-label="다음 사진">&#8250;</div>
+  <div class="lb-nav lb-next" id="lb-next" aria-label="다음 사진">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </div>
 </div>
 
 <script>
