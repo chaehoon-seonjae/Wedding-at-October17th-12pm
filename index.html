@@ -1283,11 +1283,31 @@
     lbImg.alt = img.getAttribute('alt');
   }
 
+  // 라이트박스가 열려 있는 동안 뒤 배경이 스크롤되지 않도록 body를 고정합니다.
+  let savedScrollY = 0;
+  function openLightbox(idx) {
+    showPhoto(idx);
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.width = '100%';
+    lightbox.classList.add('open');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    // html의 scroll-behavior:smooth 때문에 복원 스크롤이 애니메이션되지 않도록 즉시 이동
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    window.scrollTo(0, savedScrollY);
+    html.style.scrollBehavior = prevBehavior;
+  }
+
   galleryItems.forEach((img, idx) => {
-    img.parentElement.addEventListener('click', () => {
-      showPhoto(idx);
-      lightbox.classList.add('open');
-    });
+    img.parentElement.addEventListener('click', () => openLightbox(idx));
   });
   document.getElementById('lb-prev').addEventListener('click', (e) => {
     e.stopPropagation();
@@ -1301,13 +1321,11 @@
     if (!lightbox.classList.contains('open')) return;
     if (e.key === 'ArrowLeft') showPhoto(currentIdx - 1);
     else if (e.key === 'ArrowRight') showPhoto(currentIdx + 1);
-    else if (e.key === 'Escape') lightbox.classList.remove('open');
+    else if (e.key === 'Escape') closeLightbox();
   });
-  document.getElementById('lb-close').addEventListener('click', () => {
-    lightbox.classList.remove('open');
-  });
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) lightbox.classList.remove('open');
+    if (e.target === lightbox) closeLightbox();
   });
 
   // ---- Accordion ----
