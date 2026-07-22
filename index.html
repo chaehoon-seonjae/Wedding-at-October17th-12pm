@@ -1120,8 +1120,8 @@
   <div class="lb-nav lb-next" id="lb-next" aria-label="다음 사진">&#8250;</div>
 </div>
 
-<!-- Kakao Maps SDK. Replace YOUR_KAKAO_JS_KEY with the JavaScript key from https://developers.kakao.com/ (내 애플리케이션 > 앱 키 > JavaScript 키). Also register your domain under 플랫폼 > Web. -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6c57a9408c7d99ae86a4c01da1a530ff"></script>
+<!-- Kakao Maps SDK. Replace YOUR_KAKAO_JS_KEY with the JavaScript key from https://developers.kakao.com/ (내 애플리케이션 > 앱 키 > JavaScript 키). Also register your domain under 플랫폼 > Web.
+     services 라이브러리(장소/주소 검색)를 포함하고 autoload=false로 두어, kakao.maps.load() 콜백에서 검색 API를 안전하게 사용합니다. SDK는 한 번만 로드해야 합니다. -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6c57a9408c7d99ae86a4c01da1a530ff&autoload=false&libraries=services"></script>
 
 <script>
@@ -1254,9 +1254,10 @@
   const venueAddress = '서울 서초구 바우뫼로31길 70';
   const venueDisplayName = '양재온누리교회';
   const venueName = encodeURIComponent(venueDisplayName);
-  // 초기 fallback 좌표 (지오코더 실패 시 표시). 지오코더가 성공하면 실제 주소로 이동합니다.
-  let venueLat = 37.4759;
-  let venueLng = 127.0362;
+  // 양재온누리교회 좌표 (카카오맵 WCONGNAMUL 좌표 → WGS84 변환 추정값).
+  // 미세 오차가 있으면 카카오맵 '이 위치의 좌표는?'에서 확인한 위도/경도로 교체하세요.
+  const venueLat = 37.4795;
+  const venueLng = 127.0340;
 
   // ---- Kakao Map embed ----
   if (typeof kakao !== 'undefined' && kakao.maps) {
@@ -1268,24 +1269,14 @@
         draggable: true,
       });
 
-      const placeMarker = (lat, lng) => {
-        const pos = new kakao.maps.LatLng(lat, lng);
-        map.setCenter(pos);
-        const marker = new kakao.maps.Marker({ map, position: pos });
-        const infoContent =
-          `<div style="padding:6px 10px;font-size:12px;font-family:'Pretendard',sans-serif;color:#2B2722;white-space:nowrap;">${venueDisplayName}</div>`;
-        new kakao.maps.InfoWindow({ content: infoContent, removable: false }).open(map, marker);
-      };
+      const pos = new kakao.maps.LatLng(venueLat, venueLng);
+      map.setCenter(pos);
+      const marker = new kakao.maps.Marker({ map, position: pos });
+      const infoContent =
+        `<div style="padding:6px 10px;font-size:12px;font-family:'Pretendard',sans-serif;color:#2B2722;white-space:nowrap;">${venueDisplayName}</div>`;
+      new kakao.maps.InfoWindow({ content: infoContent, removable: false }).open(map, marker);
 
-      const geocoder = new kakao.maps.services.Geocoder();
-      geocoder.addressSearch(venueAddress, (result, status) => {
-        if (status === kakao.maps.services.Status.OK && result[0]) {
-          venueLat = parseFloat(result[0].y);
-          venueLng = parseFloat(result[0].x);
-        }
-        placeMarker(venueLat, venueLng);
-        wireExternalMapLinks();
-      });
+      wireExternalMapLinks();
     });
   } else {
     wireExternalMapLinks();
