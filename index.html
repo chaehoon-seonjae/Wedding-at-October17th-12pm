@@ -495,8 +495,15 @@
     margin-bottom: 18px;
   }
   #kakao-map {
+    display: block;
     width: 100%;
     height: 100%;
+  }
+  #kakao-map img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .address-box {
@@ -952,7 +959,9 @@
       <div class="section-title">오시는 길</div>
 
       <div class="map-frame">
-        <div id="kakao-map"></div>
+        <a id="kakao-map" href="https://map.kakao.com/?urlX=507506.9999999998&urlY=1105574.9999999977&itemId=11648382&q=%EC%96%91%EC%9E%AC%EC%98%A8%EB%88%84%EB%A6%AC%EA%B5%90%ED%9A%8C&srcid=11648382&map_type=TYPE_MAP&from=roughmap" target="_blank" rel="noopener" aria-label="카카오맵에서 양재온누리교회 위치 보기">
+          <img src="https://t1.daumcdn.net/roughmap/imgmap/16d4794ee2087dab78e8826c26759e7cc10d9fff47945bfd41807a6817fe13aa" alt="양재온누리교회 위치 지도">
+        </a>
       </div>
 
       <div class="address-box">
@@ -1120,10 +1129,6 @@
   <div class="lb-nav lb-next" id="lb-next" aria-label="다음 사진">&#8250;</div>
 </div>
 
-<!-- Kakao Maps SDK. Replace YOUR_KAKAO_JS_KEY with the JavaScript key from https://developers.kakao.com/ (내 애플리케이션 > 앱 키 > JavaScript 키). Also register your domain under 플랫폼 > Web.
-     services 라이브러리(장소/주소 검색)를 포함하고 autoload=false로 두어, kakao.maps.load() 콜백에서 검색 API를 안전하게 사용합니다. SDK는 한 번만 로드해야 합니다. -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6c57a9408c7d99ae86a4c01da1a530ff&autoload=false&libraries=services"></script>
-
 <script>
   window.addEventListener('load', () => {
     setTimeout(() => {
@@ -1251,45 +1256,19 @@
   });
 
   // ---- Venue location ----
-  const venueAddress = '서울 서초구 바우뫼로31길 70';
+  // 지도는 카카오맵 roughmap(정적 이미지, 클릭 시 카카오맵으로 이동)로 표시합니다.
+  // 여기서는 외부 지도 앱(카카오/네이버/티맵) 링크만 설정합니다.
   const venueDisplayName = '양재온누리교회';
   const venueName = encodeURIComponent(venueDisplayName);
-  // 양재온누리교회 좌표 (카카오맵 WCONGNAMUL 좌표 → WGS84 변환 추정값).
-  // 미세 오차가 있으면 카카오맵 '이 위치의 좌표는?'에서 확인한 위도/경도로 교체하세요.
   const venueLat = 37.4795;
   const venueLng = 127.0340;
 
-  // ---- Kakao Map embed ----
-  if (typeof kakao !== 'undefined' && kakao.maps) {
-    kakao.maps.load(() => {
-      const container = document.getElementById('kakao-map');
-      const map = new kakao.maps.Map(container, {
-        center: new kakao.maps.LatLng(venueLat, venueLng),
-        level: 3,
-        draggable: true,
-      });
-
-      const pos = new kakao.maps.LatLng(venueLat, venueLng);
-      map.setCenter(pos);
-      const marker = new kakao.maps.Marker({ map, position: pos });
-      const infoContent =
-        `<div style="padding:6px 10px;font-size:12px;font-family:'Pretendard',sans-serif;color:#2B2722;white-space:nowrap;">${venueDisplayName}</div>`;
-      new kakao.maps.InfoWindow({ content: infoContent, removable: false }).open(map, marker);
-
-      wireExternalMapLinks();
-    });
-  } else {
-    wireExternalMapLinks();
-  }
-
-  function wireExternalMapLinks() {
-    document.getElementById('kakao-link').href =
-      `https://map.kakao.com/link/map/${venueName},${venueLat},${venueLng}`;
-    document.getElementById('naver-link').href =
-      `https://map.naver.com/p/search/${venueName}`;
-    document.getElementById('tmap-link').href =
-      `tmap://search?name=${venueName}`;
-  }
+  document.getElementById('kakao-link').href =
+    `https://map.kakao.com/link/map/${venueName},${venueLat},${venueLng}`;
+  document.getElementById('naver-link').href =
+    `https://map.naver.com/p/search/${venueName}`;
+  document.getElementById('tmap-link').href =
+    `tmap://search?name=${venueName}`;
 
   // ---- Gallery lightbox ----
   const lightbox = document.getElementById('lightbox');
