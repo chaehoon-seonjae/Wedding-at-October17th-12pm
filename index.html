@@ -667,24 +667,7 @@
     font-size: 20px;
     cursor: pointer;
   }
-  #lightbox .lb-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.08);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--panel);
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.2s ease;
-    z-index: 2;
-  }
-  #lightbox .lb-nav svg { width: 20px; height: 20px; display: block; }
-  #lightbox .lb-nav:hover { background: rgba(255,255,255,0.18); }
-  #lightbox .lb-prev { left: 16px; }
-  #lightbox .lb-next { right: 16px; }
+  /* 하단 컨트롤 바: ◀ − + ▶ */
   #lightbox .lb-zoom {
     position: absolute;
     bottom: 24px;
@@ -694,8 +677,8 @@
     gap: 12px;
     z-index: 2;
   }
-  #lightbox .lb-zoom div {
-    width: 40px; height: 40px;
+  #lightbox .lb-zoom > div {
+    width: 44px; height: 44px;
     border-radius: 50%;
     background: rgba(255,255,255,0.08);
     display: flex; align-items: center; justify-content: center;
@@ -705,7 +688,8 @@
     user-select: none;
     transition: background 0.2s ease;
   }
-  #lightbox .lb-zoom div:hover { background: rgba(255,255,255,0.18); }
+  #lightbox .lb-zoom > div:hover { background: rgba(255,255,255,0.18); }
+  #lightbox .lb-nav svg { width: 20px; height: 20px; display: block; }
 
   /* ===== Notice ===== */
   .notice-box {
@@ -1154,16 +1138,16 @@
 
 <div id="lightbox">
   <div class="lb-close" id="lb-close">&times;</div>
-  <div class="lb-nav lb-prev" id="lb-prev" aria-label="이전 사진">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-  </div>
   <div class="lb-img" id="lb-img"></div>
-  <div class="lb-nav lb-next" id="lb-next" aria-label="다음 사진">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-  </div>
   <div class="lb-zoom">
+    <div class="lb-nav" id="lb-prev" aria-label="이전 사진">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
     <div id="lb-zoom-out" aria-label="축소">&minus;</div>
     <div id="lb-zoom-in" aria-label="확대">+</div>
+    <div class="lb-nav" id="lb-next" aria-label="다음 사진">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
   </div>
 </div>
 
