@@ -633,6 +633,7 @@
     display: none;
     align-items: center;
     justify-content: center;
+    touch-action: none;
   }
   #lightbox.open { display: flex; }
   #lightbox .lb-img {
@@ -1451,20 +1452,96 @@
     zoomTo(zScale - ZOOM_STEP, box.left + box.width / 2, box.top + box.height / 2, true);
   });
 
-  // 터치 스와이프로 좌우 사진 넘기기
+  // 터치: 스와이프 넘기기 + 핀치 줌 + 팬 + 더블탭 줌
   let touchStartX = 0, touchStartY = 0, swiped = false;
+  let pinching = false, pinchStartDist = 0, pinchStartScale = 1;
+  let panning = false, panMoved = false;
+  let panStartX = 0, panStartY = 0, panStartZX = 0, panStartZY = 0;
+  let lastTapTime = 0, lastTapX = 0, lastTapY = 0;
+  let lastTouchEnd = 0;
+
+  function touchDist(touches) {
+    return Math.hypot(
+      touches[0].clientX - touches[1].clientX,
+      touches[0].clientY - touches[1].clientY
+    );
+  }
+
   lightbox.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      pinching = true;
+      panning = false;
+      pinchStartDist = touchDist(e.touches);
+      pinchStartScale = zScale;
+      return;
+    }
+    if (e.touches.length === 1 && zScale > MIN_SCALE) {
+      panning = true;
+      panMoved = false;
+      panStartX = e.touches[0].clientX;
+      panStartY = e.touches[0].clientY;
+      panStartZX = zX;
+      panStartZY = zY;
+    }
     const t = e.changedTouches[0];
     touchStartX = t.clientX;
     touchStartY = t.clientY;
     swiped = false;
   }, { passive: true });
+
+  // 핀치/팬 중 페이지 줌 등 브라우저 기본 동작이 개입하지 않도록 non-passive로 등록
+  lightbox.addEventListener('touchmove', (e) => {
+    if (pinching && e.touches.length === 2) {
+      e.preventDefault();
+      const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      zoomTo(pinchStartScale * (touchDist(e.touches) / pinchStartDist), cx, cy, false);
+    } else if (panning && e.touches.length === 1) {
+      e.preventDefault();
+      const dx = e.touches[0].clientX - panStartX;
+      const dy = e.touches[0].clientY - panStartY;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) panMoved = true;
+      zX = panStartZX + dx;
+      zY = panStartZY + dy;
+      clampPan();
+      applyZoom(false);
+    }
+  }, { passive: false });
+
   lightbox.addEventListener('touchend', (e) => {
+    lastTouchEnd = Date.now();
+    if (pinching) {
+      // 두 손가락이 모두 떨어질 때까지 핀치 상태 유지, 직후의 클릭(닫힘)도 무시
+      if (e.touches.length === 0) pinching = false;
+      swiped = true;
+      return;
+    }
+    if (panning) {
+      panning = e.touches.length > 0;
+      if (panMoved) { swiped = true; return; }
+    }
     const t = e.changedTouches[0];
     const dx = t.clientX - touchStartX;
     const dy = t.clientY - touchStartY;
-    // 수평 이동이 충분하고, 세로보다 가로 움직임이 클 때만 스와이프로 인식
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+    // 제자리 탭이면 더블탭 판정 (닫기/화살표/줌 버튼 위의 탭은 제외 — 연타 오판 방지)
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+      if (e.target.closest('.lb-nav, .lb-close, .lb-zoom')) return;
+      const now = Date.now();
+      if (now - lastTapTime < 300 &&
+          Math.abs(t.clientX - lastTapX) < 30 && Math.abs(t.clientY - lastTapY) < 30) {
+        lastTapTime = 0;
+        swiped = true; // 더블탭 직후의 클릭으로 닫히지 않도록
+        if (zScale > MIN_SCALE) zoomTo(MIN_SCALE, t.clientX, t.clientY, true);
+        else zoomTo(DBLTAP_SCALE, t.clientX, t.clientY, true);
+        return;
+      }
+      lastTapTime = now;
+      lastTapX = t.clientX;
+      lastTapY = t.clientY;
+      return;
+    }
+    // 수평 이동이 충분하고, 세로보다 가로 움직임이 클 때만 스와이프로 인식 (1배 상태에서만)
+    if (zScale === MIN_SCALE && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
       swiped = true;
       if (dx < 0) showPhoto(currentIdx + 1, 1);   // 왼쪽으로 밀기 → 다음
       else showPhoto(currentIdx - 1, -1);          // 오른쪽으로 밀기 → 이전
