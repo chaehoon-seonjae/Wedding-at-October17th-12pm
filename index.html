@@ -684,6 +684,27 @@
   #lightbox .lb-nav:hover { background: rgba(255,255,255,0.18); }
   #lightbox .lb-prev { left: 16px; }
   #lightbox .lb-next { right: 16px; }
+  #lightbox .lb-zoom {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 2;
+  }
+  #lightbox .lb-zoom div {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--panel);
+    font-size: 22px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+  }
+  #lightbox .lb-zoom div:hover { background: rgba(255,255,255,0.18); }
 
   /* ===== Notice ===== */
   .notice-box {
@@ -1139,6 +1160,10 @@
   <div class="lb-nav lb-next" id="lb-next" aria-label="다음 사진">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
   </div>
+  <div class="lb-zoom">
+    <div id="lb-zoom-out" aria-label="축소">&minus;</div>
+    <div id="lb-zoom-in" aria-label="확대">+</div>
+  </div>
 </div>
 
 <script>
@@ -1291,6 +1316,44 @@
   let currentIdx = 0;
   let currentSlide = null;
 
+  // ---- Lightbox zoom ----
+  const MIN_SCALE = 1, MAX_SCALE = 4, DBLTAP_SCALE = 2.5, ZOOM_STEP = 0.75;
+  let zScale = 1, zX = 0, zY = 0;
+
+  function currentImg() {
+    return currentSlide ? currentSlide.querySelector('img') : null;
+  }
+  function applyZoom(animate) {
+    const img = currentImg();
+    if (!img) return;
+    img.style.transition = (animate && !REDUCE_MOTION) ? 'transform 0.25s ease' : 'none';
+    img.style.transform = `translate(${zX}px, ${zY}px) scale(${zScale})`;
+  }
+  // 확대된 이미지 경계 밖의 빈 공간이 화면에 들어오지 않도록 이동량 제한
+  function clampPan() {
+    const img = currentImg();
+    if (!img) return;
+    const box = lbImgBox.getBoundingClientRect();
+    const maxX = Math.max(0, (img.offsetWidth * zScale - box.width) / 2);
+    const maxY = Math.max(0, (img.offsetHeight * zScale - box.height) / 2);
+    zX = Math.min(maxX, Math.max(-maxX, zX));
+    zY = Math.min(maxY, Math.max(-maxY, zY));
+  }
+  // (cx, cy) 화면 좌표가 가리키는 이미지 지점을 유지하면서 배율 변경
+  function zoomTo(scale, cx, cy, animate) {
+    const s = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
+    const box = lbImgBox.getBoundingClientRect();
+    const px = cx - (box.left + box.width / 2);
+    const py = cy - (box.top + box.height / 2);
+    const ratio = s / zScale;
+    zX = px - (px - zX) * ratio;
+    zY = py - (py - zY) * ratio;
+    zScale = s;
+    if (s === MIN_SCALE) { zX = 0; zY = 0; }
+    clampPan();
+    applyZoom(animate);
+  }
+
   function makeSlide(idx) {
     const slide = document.createElement('div');
     slide.className = 'lb-slide';
@@ -1303,6 +1366,7 @@
 
   // dir: +1 다음(새 사진이 오른쪽에서) / -1 이전(왼쪽에서) / 0 전환효과 없음
   async function showPhoto(idx, dir = 0) {
+    zScale = 1; zX = 0; zY = 0; // 사진이 바뀌면 줌 초기화 (새 img는 transform 없음)
     currentIdx = (idx + galleryItems.length) % galleryItems.length;
     const { slide, img } = makeSlide(currentIdx);
 
@@ -1374,6 +1438,18 @@
     else if (e.key === 'Escape') closeLightbox();
   });
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
+
+  // 화면 중앙 기준 단계 줌
+  document.getElementById('lb-zoom-in').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const box = lbImgBox.getBoundingClientRect();
+    zoomTo(zScale + ZOOM_STEP, box.left + box.width / 2, box.top + box.height / 2, true);
+  });
+  document.getElementById('lb-zoom-out').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const box = lbImgBox.getBoundingClientRect();
+    zoomTo(zScale - ZOOM_STEP, box.left + box.width / 2, box.top + box.height / 2, true);
+  });
 
   // 터치 스와이프로 좌우 사진 넘기기
   let touchStartX = 0, touchStartY = 0, swiped = false;
