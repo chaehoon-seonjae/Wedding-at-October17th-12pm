@@ -30,14 +30,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FFFFFF;   /* clean white */
-    --panel: #F1EEE7;   /* stone panel */
-    --ink: #2C302B;     /* deep pine charcoal */
-    --ink-soft: #6E726A;/* muted sage-gray */
-    --sage: #8C9483;    /* single accent — muted sage */
-    --sage-dp: #6B7263; /* deeper sage for text accents */
-    --gold: #B8A57E;    /* a whisper of warm light, used sparingly */
-    --rose: #C68C85;    /* muted dusty rose for weekend accents */
+    --paper: #FFFFFF;         /* clean white */
+    --panel: #EAECEE;         /* crisp platinum / silver panel */
+    --ink: #1C1E21;           /* deep cool charcoal */
+    --ink-soft: #636B73;      /* muted slate gray */
+    --sage: #8A98A5;          /* cool fog blue / silver sage */
+    --sage-dp: #5E6D7A;       /* deeper slate accent for text */
+    --gold: #5B7B94;          /* icy silver accent */
+    --rose: #B87B8A;    /* muted dusty rose for weekend accents */
     --line: rgba(44,48,43,0.10);
   }
 
@@ -101,7 +101,7 @@
     position: absolute;
     inset: -6%;               /* over-scan so blur has no bald edges */
     background: url('images/main.jpeg') center 28% / cover no-repeat;
-    filter: grayscale(100%) brightness(0.62) contrast(1.02) blur(4px);
+    filter: grayscale(100%) brightness(0.62) contrast(1.02) blur(3px);
     transform: scale(1.06);
     animation: heroReveal 1.8s ease both;
   }
@@ -127,6 +127,7 @@
   #opening .hero-countdown {
     padding-left: 22px;
     border-left: 2px solid rgba(255,255,255,0.9);
+    margin-top: 20vh;
     animation: fadeUp 1.5s ease 0.5s both;
   }
   #opening .hero-countdown > span {
@@ -134,7 +135,7 @@
     white-space: nowrap;
     font-family: 'Noto Serif KR', serif;
     font-weight: 300;
-    font-size: clamp(30px, 8.4vw, 40px);
+    font-size: clamp(30px, 8.4vw, 36px);
     line-height: 1.42;
     letter-spacing: 0.01em;
     color: #fff;
@@ -435,7 +436,8 @@
   }
   .mini-calendar td.dday-cell .heart-day svg {
     position: absolute;
-    left: 50%; top: 52%;
+    left: 50%; 
+    top: 49.5%;
     transform: translate(-50%, -50%);
     width: 30px; height: 28px;
     fill: none;
@@ -458,7 +460,7 @@
     border: 1px solid rgba(44,48,43,0.24);
     border-radius: 6px;
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    font-family: 'Noto Serif KR', serif;
     font-size: 13.5px;
     font-weight: 500;
     background: transparent;
@@ -633,7 +635,6 @@
     display: none;
     align-items: center;
     justify-content: center;
-    touch-action: none;
   }
   #lightbox.open { display: flex; }
   #lightbox .lb-img {
@@ -659,7 +660,6 @@
   #lightbox .lb-close {
     position: absolute;
     top: 20px; right: 20px;
-    z-index: 3; /* 사진(.lb-img)이 위로 넘쳐도 X가 탭을 받도록 */
     width: 36px; height: 36px;
     border-radius: 50%;
     background: rgba(255,255,255,0.08);
@@ -668,33 +668,28 @@
     font-size: 20px;
     cursor: pointer;
   }
-  /* 하단 컨트롤 바: ◀ − + ▶ */
-  #lightbox .lb-zoom {
+  #lightbox .lb-nav {
     position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 12px;
-    z-index: 2;
-  }
-  #lightbox .lb-zoom > div {
+    top: 50%;
+    transform: translateY(-50%);
     width: 44px; height: 44px;
     border-radius: 50%;
     background: rgba(255,255,255,0.08);
     display: flex; align-items: center; justify-content: center;
     color: var(--panel);
-    font-size: 22px;
     cursor: pointer;
     user-select: none;
     transition: background 0.2s ease;
+    z-index: 2;
   }
-  #lightbox .lb-zoom > div:hover { background: rgba(255,255,255,0.18); }
   #lightbox .lb-nav svg { width: 20px; height: 20px; display: block; }
+  #lightbox .lb-nav:hover { background: rgba(255,255,255,0.18); }
+  #lightbox .lb-prev { left: 16px; }
+  #lightbox .lb-next { right: 16px; }
 
   /* ===== Notice ===== */
   .notice-box {
-    background: rgba(192,192,192,0.8);
+    background: var(--panel);
     border-radius: 6px;
     padding: 24px 22px;
     display: flex;
@@ -817,7 +812,7 @@
     text-align: left;
   }
   #closing .closing-msg {
-    font-size: 15.5px;
+    font-size: 14.5px;
     line-height: 1.95;
     color: rgba(255,255,255,0.9);
     word-break: keep-all;
@@ -1003,7 +998,7 @@
             <div class="t-title">자가용</div>
             <div class="t-desc">
               내비게이션에 '양재온누리교회'를 입력해 주세요.<br>
-              건물 내 주차장을 이용하실 수 있으며, 예식 안내 데스크에서 주차 등록을 도와드립니다.
+              건물 내 주차장을 이용하실 수 있습니다. 
             </div>
           </div>
         </div>
@@ -1025,8 +1020,8 @@
           <div>
             <div class="t-title">대중교통</div>
             <div class="t-desc">
-              지하철 3호선 양재역 9번 출구에서 도보 10분 거리입니다.<br>
-              버스는 양재역 정류장에서 하차 후 도보로 이동하실 수 있습니다.
+              양재역 9번 출구에서 도보 약 13분 거리입니다.<br>
+              버스는 일동제약/말죽거리사거리 정류장에서 하차 후 도보로 이동하실 수 있습니다.
             </div>
           </div>
         </div>
@@ -1078,8 +1073,7 @@
       <div class="eyebrow-sm">WITH LOVE</div>
       <div class="section-title">마음 전하는 곳</div>
       <p class="gift-intro">
-        참석이 어려우신 분들을 위해<br>
-        계좌번호를 안내드립니다.
+        멀리서 보내주시는 따뜻한 축하의 마음도<br>소중히 깊이 간직하겠습니다.
       </p>
       <div class="accordion" id="gift-accordion">
         <div class="accordion-item">
@@ -1124,9 +1118,8 @@
       <div class="closing-inner">
         <p class="closing-msg">
           저희 두 사람의 새로운 시작을<br>
-          함께해 주셔서 감사합니다.<br><br>
-          보내주신 마음 잊지 않고<br>
-          늘 행복하게 살겠습니다.
+          함께 축복해주셔서 감사합니다.<br><br>
+          와주신 모든 분들의 앞날에<br>늘 평안과 기쁨이 함께 하길 바랍니다.
         </p>
         <div class="thanks-names">양채훈 · 임선재 올림</div>
         <div class="final-mark">2026. 10. 17</div>
@@ -1139,16 +1132,12 @@
 
 <div id="lightbox">
   <div class="lb-close" id="lb-close">&times;</div>
+  <div class="lb-nav lb-prev" id="lb-prev" aria-label="이전 사진">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </div>
   <div class="lb-img" id="lb-img"></div>
-  <div class="lb-zoom">
-    <div class="lb-nav" id="lb-prev" aria-label="이전 사진">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </div>
-    <div id="lb-zoom-out" aria-label="축소">&minus;</div>
-    <div id="lb-zoom-in" aria-label="확대">+</div>
-    <div class="lb-nav" id="lb-next" aria-label="다음 사진">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </div>
+  <div class="lb-nav lb-next" id="lb-next" aria-label="다음 사진">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
   </div>
 </div>
 
@@ -1255,26 +1244,55 @@
 
   // ---- Copy address ----
   function copyText(text, btn, defaultLabel) {
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '복사 완료';
-      btn.classList.add('copied');
+    const setFeedback = (label, isCopied) => {
+      btn.textContent = label;
+      btn.classList.toggle('copied', isCopied);
       setTimeout(() => {
         btn.textContent = defaultLabel;
         btn.classList.remove('copied');
       }, 1600);
-    }).catch(() => {
-      btn.textContent = '복사 실패';
-      setTimeout(() => { btn.textContent = defaultLabel; }, 1600);
-    });
+    };
+
+    const tryCopy = async () => {
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          setFeedback('복사 완료', true);
+          return;
+        } catch (e) {
+          // ...existing code...
+        }
+      }
+
+      try {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        temp.setAttribute('readonly', '');
+        temp.style.position = 'fixed';
+        temp.style.left = '-9999px';
+        temp.style.top = '-9999px';
+        document.body.appendChild(temp);
+        temp.focus();
+        temp.select();
+        temp.setSelectionRange(0, temp.value.length);
+        const ok = document.execCommand('copy');
+        document.body.removeChild(temp);
+        setFeedback(ok ? '복사 완료' : '복사 실패', ok);
+      } catch (e) {
+        setFeedback('복사 실패', false);
+      }
+    };
+
+    tryCopy();
   }
 
   document.getElementById('copy-address-btn').addEventListener('click', (e) => {
-    copyText('서울 서초구 바우뫼로31길 70 양재온누리교회', e.target, '주소 복사');
+    copyText('서울 서초구 바우뫼로31길 70 양재온누리교회', e.currentTarget, '주소 복사');
   });
 
   document.querySelectorAll('.acc-copy').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      copyText(e.target.getAttribute('data-account'), e.target, '복사');
+      copyText(e.currentTarget.getAttribute('data-account'), e.currentTarget, '복사');
     });
   });
 
@@ -1302,44 +1320,6 @@
   let currentIdx = 0;
   let currentSlide = null;
 
-  // ---- Lightbox zoom ----
-  const MIN_SCALE = 1, MAX_SCALE = 4, DBLTAP_SCALE = 2.5, ZOOM_STEP = 0.75;
-  let zScale = 1, zX = 0, zY = 0;
-
-  function currentImg() {
-    return currentSlide ? currentSlide.querySelector('img') : null;
-  }
-  function applyZoom(animate) {
-    const img = currentImg();
-    if (!img) return;
-    img.style.transition = (animate && !REDUCE_MOTION) ? 'transform 0.25s ease' : 'none';
-    img.style.transform = `translate(${zX}px, ${zY}px) scale(${zScale})`;
-  }
-  // 확대된 이미지 경계 밖의 빈 공간이 화면에 들어오지 않도록 이동량 제한
-  function clampPan() {
-    const img = currentImg();
-    if (!img) return;
-    const box = lbImgBox.getBoundingClientRect();
-    const maxX = Math.max(0, (img.offsetWidth * zScale - box.width) / 2);
-    const maxY = Math.max(0, (img.offsetHeight * zScale - box.height) / 2);
-    zX = Math.min(maxX, Math.max(-maxX, zX));
-    zY = Math.min(maxY, Math.max(-maxY, zY));
-  }
-  // (cx, cy) 화면 좌표가 가리키는 이미지 지점을 유지하면서 배율 변경
-  function zoomTo(scale, cx, cy, animate) {
-    const s = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
-    const box = lbImgBox.getBoundingClientRect();
-    const px = cx - (box.left + box.width / 2);
-    const py = cy - (box.top + box.height / 2);
-    const ratio = s / zScale;
-    zX = px - (px - zX) * ratio;
-    zY = py - (py - zY) * ratio;
-    zScale = s;
-    if (s === MIN_SCALE) { zX = 0; zY = 0; }
-    clampPan();
-    applyZoom(animate);
-  }
-
   function makeSlide(idx) {
     const slide = document.createElement('div');
     slide.className = 'lb-slide';
@@ -1352,7 +1332,6 @@
 
   // dir: +1 다음(새 사진이 오른쪽에서) / -1 이전(왼쪽에서) / 0 전환효과 없음
   async function showPhoto(idx, dir = 0) {
-    zScale = 1; zX = 0; zY = 0; // 사진이 바뀌면 줌 초기화 (새 img는 transform 없음)
     currentIdx = (idx + galleryItems.length) % galleryItems.length;
     const { slide, img } = makeSlide(currentIdx);
 
@@ -1425,148 +1404,25 @@
   });
   document.getElementById('lb-close').addEventListener('click', closeLightbox);
 
-  // 화면 중앙 기준 단계 줌
-  document.getElementById('lb-zoom-in').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const box = lbImgBox.getBoundingClientRect();
-    zoomTo(zScale + ZOOM_STEP, box.left + box.width / 2, box.top + box.height / 2, true);
-  });
-  document.getElementById('lb-zoom-out').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const box = lbImgBox.getBoundingClientRect();
-    zoomTo(zScale - ZOOM_STEP, box.left + box.width / 2, box.top + box.height / 2, true);
-  });
-
-  // 터치: 스와이프 넘기기 + 핀치 줌 + 팬 + 더블탭 줌
+  // 터치 스와이프로 좌우 사진 넘기기
   let touchStartX = 0, touchStartY = 0, swiped = false;
-  let pinching = false, pinchStartDist = 0, pinchStartScale = 1;
-  let panning = false, panMoved = false;
-  let panStartX = 0, panStartY = 0, panStartZX = 0, panStartZY = 0;
-  let lastTapTime = 0, lastTapX = 0, lastTapY = 0;
-  let lastTouchEnd = 0;
-
-  function touchDist(touches) {
-    return Math.hypot(
-      touches[0].clientX - touches[1].clientX,
-      touches[0].clientY - touches[1].clientY
-    );
-  }
-
   lightbox.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 2) {
-      pinching = true;
-      panning = false;
-      pinchStartDist = touchDist(e.touches);
-      pinchStartScale = zScale;
-      return;
-    }
-    if (e.touches.length === 1 && zScale > MIN_SCALE) {
-      panning = true;
-      panMoved = false;
-      panStartX = e.touches[0].clientX;
-      panStartY = e.touches[0].clientY;
-      panStartZX = zX;
-      panStartZY = zY;
-    }
     const t = e.changedTouches[0];
     touchStartX = t.clientX;
     touchStartY = t.clientY;
     swiped = false;
   }, { passive: true });
-
-  // 핀치/팬 중 페이지 줌 등 브라우저 기본 동작이 개입하지 않도록 non-passive로 등록
-  lightbox.addEventListener('touchmove', (e) => {
-    if (pinching && e.touches.length === 2) {
-      e.preventDefault();
-      const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-      const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-      zoomTo(pinchStartScale * (touchDist(e.touches) / pinchStartDist), cx, cy, false);
-    } else if (panning && e.touches.length === 1) {
-      e.preventDefault();
-      const dx = e.touches[0].clientX - panStartX;
-      const dy = e.touches[0].clientY - panStartY;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) panMoved = true;
-      zX = panStartZX + dx;
-      zY = panStartZY + dy;
-      clampPan();
-      applyZoom(false);
-    }
-  }, { passive: false });
-
   lightbox.addEventListener('touchend', (e) => {
-    lastTouchEnd = Date.now();
-    if (pinching) {
-      // 두 손가락이 모두 떨어질 때까지 핀치 상태 유지, 직후의 클릭(닫힘)도 무시
-      if (e.touches.length === 0) pinching = false;
-      swiped = true;
-      return;
-    }
-    if (panning) {
-      panning = e.touches.length > 0;
-      if (panMoved) { swiped = true; return; }
-    }
     const t = e.changedTouches[0];
     const dx = t.clientX - touchStartX;
     const dy = t.clientY - touchStartY;
-    // 제자리 탭이면 더블탭 판정 (닫기/화살표/줌 버튼 위의 탭은 제외 — 연타 오판 방지)
-    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
-      if (e.target.closest('.lb-nav, .lb-close, .lb-zoom')) return;
-      const now = Date.now();
-      if (now - lastTapTime < 300 &&
-          Math.abs(t.clientX - lastTapX) < 30 && Math.abs(t.clientY - lastTapY) < 30) {
-        lastTapTime = 0;
-        swiped = true; // 더블탭 직후의 클릭으로 닫히지 않도록
-        if (zScale > MIN_SCALE) zoomTo(MIN_SCALE, t.clientX, t.clientY, true);
-        else zoomTo(DBLTAP_SCALE, t.clientX, t.clientY, true);
-        return;
-      }
-      lastTapTime = now;
-      lastTapX = t.clientX;
-      lastTapY = t.clientY;
-      return;
-    }
-    // 수평 이동이 충분하고, 세로보다 가로 움직임이 클 때만 스와이프로 인식 (1배 상태에서만)
-    if (zScale === MIN_SCALE && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+    // 수평 이동이 충분하고, 세로보다 가로 움직임이 클 때만 스와이프로 인식
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
       swiped = true;
       if (dx < 0) showPhoto(currentIdx + 1, 1);   // 왼쪽으로 밀기 → 다음
       else showPhoto(currentIdx - 1, -1);          // 오른쪽으로 밀기 → 이전
     }
   }, { passive: true });
-
-  // 데스크톱: 더블클릭 줌 (터치 더블탭이 만드는 합성 dblclick은 무시)
-  lightbox.addEventListener('dblclick', (e) => {
-    if (Date.now() - lastTouchEnd < 500) return;
-    if (e.target.closest('.lb-nav, .lb-close, .lb-zoom')) return; // 버튼 연타는 줌 아님
-    if (zScale > MIN_SCALE) zoomTo(MIN_SCALE, e.clientX, e.clientY, true);
-    else zoomTo(DBLTAP_SCALE, e.clientX, e.clientY, true);
-  });
-
-  // 데스크톱: 확대 상태에서 마우스 드래그로 팬
-  let mousePanning = false;
-  lightbox.addEventListener('mousedown', (e) => {
-    if (zScale === MIN_SCALE) return;
-    mousePanning = true;
-    panMoved = false;
-    panStartX = e.clientX;
-    panStartY = e.clientY;
-    panStartZX = zX;
-    panStartZY = zY;
-    e.preventDefault(); // 이미지 기본 드래그(고스트 이미지) 방지
-  });
-  window.addEventListener('mousemove', (e) => {
-    if (!mousePanning) return;
-    const dx = e.clientX - panStartX;
-    const dy = e.clientY - panStartY;
-    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) panMoved = true;
-    zX = panStartZX + dx;
-    zY = panStartZY + dy;
-    clampPan();
-    applyZoom(false);
-  });
-  window.addEventListener('mouseup', () => {
-    if (mousePanning && panMoved) swiped = true; // 드래그 직후의 클릭으로 닫히지 않도록
-    mousePanning = false;
-  });
 
   lightbox.addEventListener('click', (e) => {
     if (swiped) { swiped = false; return; } // 스와이프 직후의 클릭은 무시(닫힘 방지)
