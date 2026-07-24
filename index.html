@@ -1548,6 +1548,41 @@
     }
   }, { passive: true });
 
+  // 데스크톱: 더블클릭 줌 (터치 더블탭이 만드는 합성 dblclick은 무시)
+  lightbox.addEventListener('dblclick', (e) => {
+    if (Date.now() - lastTouchEnd < 500) return;
+    if (e.target.closest('.lb-nav, .lb-close, .lb-zoom')) return; // 버튼 연타는 줌 아님
+    if (zScale > MIN_SCALE) zoomTo(MIN_SCALE, e.clientX, e.clientY, true);
+    else zoomTo(DBLTAP_SCALE, e.clientX, e.clientY, true);
+  });
+
+  // 데스크톱: 확대 상태에서 마우스 드래그로 팬
+  let mousePanning = false;
+  lightbox.addEventListener('mousedown', (e) => {
+    if (zScale === MIN_SCALE) return;
+    mousePanning = true;
+    panMoved = false;
+    panStartX = e.clientX;
+    panStartY = e.clientY;
+    panStartZX = zX;
+    panStartZY = zY;
+    e.preventDefault(); // 이미지 기본 드래그(고스트 이미지) 방지
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!mousePanning) return;
+    const dx = e.clientX - panStartX;
+    const dy = e.clientY - panStartY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) panMoved = true;
+    zX = panStartZX + dx;
+    zY = panStartZY + dy;
+    clampPan();
+    applyZoom(false);
+  });
+  window.addEventListener('mouseup', () => {
+    if (mousePanning && panMoved) swiped = true; // 드래그 직후의 클릭으로 닫히지 않도록
+    mousePanning = false;
+  });
+
   lightbox.addEventListener('click', (e) => {
     if (swiped) { swiped = false; return; } // 스와이프 직후의 클릭은 무시(닫힘 방지)
     if (e.target === lightbox) closeLightbox();
