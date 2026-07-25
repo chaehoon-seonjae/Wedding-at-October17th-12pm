@@ -30,15 +30,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FFFFFF;         /* clean white */
-    --panel: #EAECEE;         /* crisp platinum / silver panel */
-    --ink: #1C1E21;           /* deep cool charcoal */
-    --ink-soft: #636B73;      /* muted slate gray */
-    --sage: #8A98A5;          /* cool fog blue / silver sage */
-    --sage-dp: #5E6D7A;       /* deeper slate accent for text */
-    --gold: #5B7B94;          /* icy silver accent */
-    --rose: #B87B8A;    /* muted dusty rose for weekend accents */
-    --line: rgba(28,30,33,0.10);
+    --paper: #FFFDFB;         /* porcelain warm white */
+    --panel: #F8F1EE;         /* powder blush panel */
+    --ink: #362D2B;           /* rosewood charcoal */
+    --ink-soft: #7E6B64;      /* rosy taupe */
+    --sage: #D6BCB2;          /* pale rose sand — decorative strokes */
+    --sage-dp: #91706C;       /* deep rose taupe for text & icons */
+    --gold: #B27379;          /* rose gold accent */
+    --rose: #C08693;    /* dusty rose — hearts & weekend only */
+    --line: rgba(54,45,43,0.10);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -86,7 +86,7 @@
     50% { transform: scale(1.06); opacity: 1; }
   }
 
-  /* ===== Opening (full-bleed monochrome hero) ===== */
+  /* ===== Opening (full-bleed dark monochrome hero) ===== */
   #opening {
     position: relative;
     width: 100%;
@@ -157,7 +157,7 @@
     text-shadow: 0 1px 16px rgba(0,0,0,0.5);
   }
   #opening .hero-names .heart {
-    color: var(--sage);
+    color: var(--rose);
     margin: 0 0.5em;
     font-size: 15px;
   }
@@ -199,7 +199,7 @@
     justify-content: space-evenly;
     align-items: center;
     padding: 15px 10px;
-    background: rgba(255,255,255,0.92);
+    background: rgba(255,253,251,0.92);
     -webkit-backdrop-filter: saturate(1.1) blur(10px);
     backdrop-filter: saturate(1.1) blur(10px);
     border-bottom: 1px solid var(--line);
@@ -423,7 +423,7 @@
     padding: 9px 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   }
-  .mini-calendar td.dim { color: rgba(99,107,115,0.30); }
+  .mini-calendar td.dim { color: rgba(126,107,100,0.32); }
   .mini-calendar td.dday-cell { position: relative; }
   .mini-calendar td.dday-cell .heart-day {
     position: relative;
@@ -441,8 +441,8 @@
     transform: translate(-50%, -50%);
     width: 30px; height: 28px;
     fill: none;
-    stroke: var(--ink);
-    stroke-width: 1.3;
+    stroke: var(--rose);
+    stroke-width: 1.4;
     stroke-linejoin: round;
   }
   .mini-calendar th.sun, .mini-calendar td.sun:not(.dday-cell) { color: var(--rose); }
@@ -457,7 +457,7 @@
     width: 100%;
     max-width: 200px;
     padding: 14px 0;
-    border: 1px solid rgba(28,30,33,0.24);
+    border: 1px solid rgba(54,45,43,0.22);
     border-radius: 6px;
     color: var(--ink);
     font-family: 'Noto Serif KR', serif;
@@ -491,7 +491,7 @@
     width: 100%;
     height: 220px;
     border-radius: 6px;
-    background: linear-gradient(135deg, #EAECEE 0%, #DDE1E5 100%);
+    background: linear-gradient(135deg, #FBF5F2 0%, #F0E2DC 100%);
     position: relative;
     overflow: hidden;
     margin-bottom: 18px;
@@ -566,7 +566,7 @@
     width: 7px; height: 7px;
     border-radius: 50%;
     flex-shrink: 0;
-    box-shadow: 0 0 0 1px rgba(28,30,33,0.10);
+    box-shadow: 0 0 0 1px rgba(54,45,43,0.10);
   }
   .nav-cta-row a.kakao::before { background: #FEE500; }
   .nav-cta-row a.naver::before { background: #03C75A; }
@@ -615,7 +615,7 @@
     aspect-ratio: 1/1;
     border-radius: 3px;
     overflow: hidden;
-    background: linear-gradient(150deg, #EAECEE 0%, #DDE1E5 100%);
+    background: linear-gradient(150deg, #FBF5F2 0%, #F0E2DC 100%);
     cursor: pointer;
   }
   .gallery-grid .g-item img {
@@ -630,7 +630,7 @@
   #lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(16,17,19,0.92);
+    background: rgba(24,20,16,0.92);
     z-index: 500;
     display: none;
     align-items: center;
