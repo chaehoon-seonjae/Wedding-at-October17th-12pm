@@ -30,20 +30,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FFFDFB;         /* porcelain warm white */
-    --panel: #F8F1EE;         /* powder blush panel */
-    --ink: #362D2B;           /* rosewood charcoal */
-    --ink-soft: #7E6B64;      /* rosy taupe */
-    --sage: #D6BCB2;          /* pale rose sand — decorative strokes */
-    --sage-dp: #91706C;       /* deep rose taupe for text & icons */
-    --gold: #B27379;          /* rose gold accent */
-    --rose: #C08693;    /* dusty rose — hearts & weekend only */
-    --line: rgba(54,45,43,0.10);
+  /* [배경] 노란기/초록기를 뺀 100% 깨끗하고 시원한 백색 기반 (답답함 제거) */
+  --paper: #FFFFFF;         /* clean contrast white */
+  --panel: #F2F5F1;         /* crisp soft green panel (패널 경계를 또렷하게) */
+  
+  /* [글씨 대비 MAX] 흑연에 가까운 짙은 포레스트 차콜 (선명함 200% UP) */
+  --ink: #141B14;           /* deep pine black (메인 제목/이름) */
+  --ink-soft: #2D382D;      /* dark moss forest (초대글 본문 - 어둡고 또렷하게) */
+  
+  /* [그린 포인트] 명도를 확실히 낮춘 딥 세이지/올리브 */
+  --sage: #6E7E67;          
+  --sage-dp: #2C3E27;       /* 짙은 상록수 그린 (아이콘 및 강조) */
+  
+  /* [라벨 포인트] 흰 배경에서 한눈에 팍 띄는 딥 브론즈 골드 */
+  --gold: #7A5B28;          /* (INVITATION, 신랑/신부 라벨 - 흐리지 않게) */
+  --rose: #AD4B4B;          /* 포인트 레드/코랄 */
+  
+  --line: rgba(20,27,20,0.18); /* 구분선 명도도 살짝 강화 */
   }
 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
 
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    /* 스크롤을 마치면 각 큰 섹션의 시작점으로 정렬한다. */
+    scroll-snap-type: y mandatory;
+  }
   html, body {
     background: var(--panel);
     color: var(--ink);
@@ -66,24 +79,120 @@
   #loader {
     position: fixed;
     inset: 0;
-    background: var(--paper);
+    background:
+      radial-gradient(circle at 50% 44%, rgba(255,255,255,0.13), transparent 28%),
+      #171a16;
     z-index: 999;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.8s ease;
+    overflow: hidden;
+    color: #fff;
+    transition: opacity 0.9s ease;
   }
   #loader.hide { opacity: 0; pointer-events: none; }
-  .loader-mark {
-    width: 34px; height: 34px;
-    border: 1px solid var(--sage);
-    border-radius: 50% 50% 4px 4px;
-    position: relative;
-    animation: breathe 2.2s ease-in-out infinite;
+  .loader-glow {
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(234,213,186,0.22) 0%, rgba(234,213,186,0.07) 34%, transparent 68%);
+    filter: blur(5px);
+    animation: introGlow 1.8s ease-in-out both;
   }
-  @keyframes breathe {
-    0%,100% { transform: scale(0.94); opacity: 0.4; }
-    50% { transform: scale(1.06); opacity: 1; }
+  .loader-orbit {
+    position: absolute;
+    width: 126px;
+    height: 126px;
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 50%;
+    animation: introOrbit 2.4s ease-out both;
+  }
+  .loader-sparkle {
+    position: absolute;
+    color: rgba(255,255,255,0.7);
+    font-size: 11px;
+    line-height: 1;
+    opacity: 0;
+    transform: translate(var(--sparkle-x), var(--sparkle-y));
+    animation: introSparkle 1.1s ease 0.65s forwards;
+  }
+  .loader-sparkle.one { --sparkle-x: -52px; --sparkle-y: -33px; }
+  .loader-sparkle.two { --sparkle-x: 57px; --sparkle-y: 24px; animation-delay: 0.85s; font-size: 8px; }
+  .loader-intro {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .loader-heart {
+    width: 30px;
+    height: 28px;
+    fill: none;
+    stroke: rgba(255,255,255,0.92);
+    stroke-width: 1.35;
+    stroke-linejoin: round;
+    stroke-dasharray: 90;
+    stroke-dashoffset: 90;
+    animation: drawHeart 0.8s ease-out 0.15s forwards;
+  }
+  .loader-date {
+    margin-top: 19px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.7);
+    opacity: 0;
+    animation: introText 0.6s ease 0.45s forwards;
+  }
+  .loader-names {
+    margin-top: 11px;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: #fff;
+    opacity: 0;
+    animation: introText 0.7s ease 0.65s forwards;
+  }
+  .loader-names .loader-separator {
+    display: inline-block;
+    margin: 0 0.34em;
+    color: var(--rose);
+    font-size: 13px;
+    vertical-align: 1px;
+  }
+  .loader-message {
+    margin-top: 19px;
+    padding-top: 13px;
+    border-top: 1px solid rgba(255,255,255,0.22);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.58);
+    opacity: 0;
+    animation: introText 0.65s ease 1.05s forwards;
+  }
+  @keyframes drawHeart {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes introText {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes introGlow {
+    0% { transform: scale(0.72); opacity: 0; }
+    55% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.18); opacity: 0.7; }
+  }
+  @keyframes introOrbit {
+    0% { transform: scale(0.65) rotate(-12deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  @keyframes introSparkle {
+    0% { opacity: 0; transform: translate(var(--sparkle-x), var(--sparkle-y)) scale(0.4); }
+    65% { opacity: 1; }
+    100% { opacity: 0.7; transform: translate(var(--sparkle-x), var(--sparkle-y)) scale(1); }
   }
 
   /* ===== Opening (full-bleed dark monochrome hero) ===== */
@@ -100,8 +209,8 @@
   #opening .hero-bg {
     position: absolute;
     inset: -6%;               /* over-scan so blur has no bald edges */
-    background: url('images/main.jpeg') center 28% / cover no-repeat;
-    filter: grayscale(100%) brightness(0.62) contrast(1.02) blur(3px);
+    background: url('images/candidate_1.jpeg') center 28% / cover no-repeat;
+    filter: brightness(1.03) contrast(0.98) blur(0.4px);
     transform: scale(1.06);
     animation: heroReveal 1.8s ease both;
   }
@@ -109,7 +218,7 @@
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(10,10,10,0.58) 0%, rgba(10,10,10,0.30) 38%, rgba(10,10,10,0.72) 100%);
+      linear-gradient(180deg, rgba(10,10,10,0.52) 0%, rgba(10,10,10,0.10) 42%, rgba(10,10,10,0.62) 100%);
     pointer-events: none;
   }
   #opening .hero-inner {
@@ -127,15 +236,14 @@
   #opening .hero-countdown {
     padding-left: 22px;
     border-left: 2px solid rgba(255,255,255,0.9);
-    margin-top: 20vh;
     animation: fadeUp 1.5s ease 0.5s both;
   }
   #opening .hero-countdown > span {
     display: block;
     white-space: nowrap;
     font-family: 'Noto Serif KR', serif;
-    font-weight: 300;
-    font-size: clamp(30px, 8.4vw, 36px);
+    font-weight: 430;
+    font-size: clamp(35px, 8.4vw, 48px);
     line-height: 1.42;
     letter-spacing: 0.01em;
     color: #fff;
@@ -150,7 +258,7 @@
   }
   #opening .hero-names {
     font-family: 'Noto Serif KR', serif;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     letter-spacing: 0.14em;
     color: #fff;
@@ -162,16 +270,16 @@
     font-size: 15px;
   }
   #opening .hero-date {
-    margin-top: 22px;
-    font-size: 13.5px;
+    margin-top: 50px;
+    font-size: 15px;
     font-weight: 400;
     letter-spacing: 0.02em;
     color: rgba(255,255,255,0.92);
     text-shadow: 0 1px 14px rgba(0,0,0,0.5);
   }
   #opening .hero-venue {
-    margin-top: 6px;
-    font-size: 13.5px;
+    margin-top: 15px;
+    font-size: 15px;
     letter-spacing: 0.03em;
     color: rgba(255,255,255,0.82);
     text-shadow: 0 1px 14px rgba(0,0,0,0.5);
@@ -233,13 +341,20 @@
   /* ===== Body sections ===== */
   main {
     background: var(--paper);
+    /* 초대 문구·안내문 등 일반 본문의 가독성을 높인다. */
+    font-weight: 500;
   }
   .section {
-    padding: 76px 34px;
+    padding: 40px 34px 76px;
     position: relative;
+    scroll-snap-align: start;
   }
   .section + .section {
     border-top: 1px solid var(--line);
+  }
+  #opening,
+  #closing {
+    scroll-snap-align: start;
   }
   .reveal {
     opacity: 0;
@@ -292,6 +407,28 @@
     background: var(--paper);
     padding-bottom: 64px;
   }
+  /* 작은 초대장 아이콘 (INVITATION 위에 표시) */
+  .invitation-icon {
+    width: clamp(50px, 9vw, 90px);
+    height: clamp(24px, 4.5vw, 45px);
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent; /* remove square panel */
+  }
+  /* show image cleanly inside the circular frame */
+  .invitation-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    background: transparent;
+    padding: 0; /* remove previous padding that created a visible inset */
+    border-radius: 8px; /* slightly round inner image to soften edges */
+  }
   .eyebrow-sm.gold { color: var(--gold); }
   #greeting .couple-card {
     margin-top: 34px;
@@ -314,6 +451,103 @@
     line-height: 1.9;
   }
   #greeting .signoff b { color: var(--ink); font-weight: 600; }
+
+  /* ===== Journey (sample story timeline) ===== */
+  #journey {
+    background: #F5F7F3;
+  }
+  #journey .journey-lead {
+    margin: -18px 0 38px;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    text-align: center;
+    word-break: keep-all;
+  }
+  .journey-track {
+    position: relative;
+    padding-left: 25px;
+  }
+  .journey-track::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    bottom: 38px;
+    left: 4px;
+    width: 1px;
+    background: var(--sage);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  #journey.in .journey-track::before {
+    animation: journeyLine 1.2s ease-out 0.15s forwards;
+  }
+  .journey-moment {
+    position: relative;
+    padding: 0 0 42px;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  .journey-moment::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: -25px;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #F5F7F3;
+    border-radius: 50%;
+    background: var(--sage-dp);
+  }
+  .journey-moment:last-child { padding-bottom: 0; }
+  #journey.in .journey-moment { animation: journeyMomentIn 0.7s ease forwards; }
+  #journey.in .journey-moment:nth-child(1) { animation-delay: 0.24s; }
+  #journey.in .journey-moment:nth-child(2) { animation-delay: 0.46s; }
+  #journey.in .journey-moment:nth-child(3) { animation-delay: 0.68s; }
+  #journey.in .journey-moment:nth-child(4) { animation-delay: 0.9s; }
+  .journey-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+  }
+  .journey-moment h3 {
+    margin-top: 5px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  .journey-moment p {
+    margin-top: 9px;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    word-break: keep-all;
+  }
+  .journey-photo {
+    width: 100%;
+    height: 174px;
+    margin-top: 17px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--paper);
+    box-shadow: 0 9px 20px rgba(20,27,20,0.08);
+  }
+  .journey-photo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .journey-moment:nth-child(even) .journey-photo { height: 132px; }
+  @keyframes journeyLine {
+    to { transform: scaleY(1); }
+  }
+  @keyframes journeyMomentIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* ===== Couple info ===== */
   .couple-card {
@@ -370,10 +604,10 @@
   }
 
   /* ===== Date / venue (ceremony) ===== */
-  #ceremony { padding-top: 36px; border-top: none; }
+  #ceremony { padding-top: 0; border-top: none; }
   .ceremony-head {
-    margin: 0 -34px 54px;
-    padding: 46px 34px;
+    margin: 0 -34px 24px;
+    padding: 40px 34px 20px;
     background: var(--paper);
     text-align: center;
   }
@@ -424,26 +658,40 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   }
   .mini-calendar td.dim { color: rgba(126,107,100,0.32); }
-  .mini-calendar td.dday-cell { position: relative; }
+  .mini-calendar td.dday-cell {
+    padding: 0;
+    vertical-align: middle;
+  }
   .mini-calendar td.dday-cell .heart-day {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px; height: 30px;
+    display: grid;
+    place-items: center;
+    width: 46px; height: 42px;
+    margin: 0 auto;
     font-weight: 700;
-    color: var(--ink);
+    color: #fff;
+    line-height: 1;
   }
   .mini-calendar td.dday-cell .heart-day svg {
     position: absolute;
-    left: 50%; 
-    top: 49.5%;
-    transform: translate(-50%, -50%);
-    width: 30px; height: 28px;
-    fill: none;
-    stroke: var(--rose);
-    stroke-width: 1.4;
-    stroke-linejoin: round;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: var(--rose);
+    filter: drop-shadow(0 3px 4px rgba(173, 75, 75, 0.2));
+  }
+  .mini-calendar td.dday-cell .heart-day .date-number {
+    position: relative;
+    z-index: 1;
+    transform: translateY(-1px);
+  }
+  #ceremony.in .mini-calendar td.dday-cell .heart-day {
+    animation: dateHeartPulse 0.7s cubic-bezier(0.22, 0.75, 0.32, 1.2) 0.35s both;
+  }
+  @keyframes dateHeartPulse {
+    0% { transform: scale(0.78); opacity: 0; }
+    58% { transform: scale(1.14); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
   }
   .mini-calendar th.sun, .mini-calendar td.sun:not(.dday-cell) { color: var(--rose); }
   .mini-calendar th.sat { color: var(--rose); }
@@ -489,7 +737,7 @@
   /* ===== Location section ===== */
   .map-frame {
     width: 100%;
-    height: 220px;
+    height: 200px;
     border-radius: 6px;
     background: linear-gradient(135deg, #FBF5F2 0%, #F0E2DC 100%);
     position: relative;
@@ -561,47 +809,51 @@
     transition: background 0.2s;
   }
   .nav-cta-row a:active { background: var(--panel); }
-  .nav-cta-row a::before {
-    content: '';
-    width: 7px; height: 7px;
-    border-radius: 50%;
+  .nav-cta-row .map-app-icon {
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
-    box-shadow: 0 0 0 1px rgba(54,45,43,0.10);
+    border-radius: 5px;
+    object-fit: contain;
   }
-  .nav-cta-row a.kakao::before { background: #FEE500; }
-  .nav-cta-row a.naver::before { background: #03C75A; }
-  .nav-cta-row a.tmap::before { background: #1B1442; }
 
   .transport-info {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 8px;
+    margin-top: 28px;
   }
   .transport-item {
     display: flex;
-    gap: 14px;
+    gap: 13px;
     align-items: flex-start;
+    padding: 15px 14px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
   }
   .transport-item .icon-wrap {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: var(--panel);
+    width: 40px; height: 40px;
+    border-radius: 7px;
+    background: var(--sage-dp);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .transport-item .icon-wrap svg { width: 18px; height: 18px; stroke: var(--sage-dp); }
+  .transport-item .icon-wrap svg { width: 19px; height: 19px; stroke: #fff; }
+  .transport-item > div:last-child { padding-top: 1px; }
   .transport-item .t-title {
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 600;
     color: var(--ink);
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    letter-spacing: 0.03em;
   }
   .transport-item .t-desc {
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--ink-soft);
-    line-height: 1.65;
+    line-height: 1.6;
     word-break: keep-all;
   }
 
@@ -617,6 +869,26 @@
     overflow: hidden;
     background: linear-gradient(150deg, #FBF5F2 0%, #F0E2DC 100%);
     cursor: pointer;
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  #gallery.in .gallery-grid .g-item {
+    animation: galleryItemIn 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  #gallery.in .gallery-grid .g-item:nth-child(1) { animation-delay: 0.15s; }
+  #gallery.in .gallery-grid .g-item:nth-child(2) { animation-delay: 0.2s; }
+  #gallery.in .gallery-grid .g-item:nth-child(3) { animation-delay: 0.25s; }
+  #gallery.in .gallery-grid .g-item:nth-child(4) { animation-delay: 0.3s; }
+  #gallery.in .gallery-grid .g-item:nth-child(5) { animation-delay: 0.35s; }
+  #gallery.in .gallery-grid .g-item:nth-child(6) { animation-delay: 0.4s; }
+  #gallery.in .gallery-grid .g-item:nth-child(7) { animation-delay: 0.45s; }
+  #gallery.in .gallery-grid .g-item:nth-child(8) { animation-delay: 0.5s; }
+  #gallery.in .gallery-grid .g-item:nth-child(9) { animation-delay: 0.55s; }
+  #gallery.in .gallery-grid .g-item:nth-child(10) { animation-delay: 0.6s; }
+  #gallery.in .gallery-grid .g-item:nth-child(11) { animation-delay: 0.65s; }
+  #gallery.in .gallery-grid .g-item:nth-child(12) { animation-delay: 0.7s; }
+  @keyframes galleryItemIn {
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
   .gallery-grid .g-item img {
     width: 100%;
@@ -740,26 +1012,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 4px;
-    cursor: pointer;
+    padding: 18px 4px 8px;
   }
   .accordion-head .side-label {
     font-size: 14.5px;
     font-weight: 600;
     color: var(--ink);
   }
-  .accordion-head .chev {
-    width: 10px; height: 10px;
-    border-right: 1.4px solid var(--ink-soft);
-    border-bottom: 1.4px solid var(--ink-soft);
-    transform: rotate(45deg);
-    transition: transform 0.3s;
-  }
-  .accordion-item.open .chev { transform: rotate(225deg); }
   .accordion-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.35s ease;
+    max-height: none;
+    overflow: visible;
   }
   .account-row {
     display: flex;
@@ -802,6 +1064,13 @@
     background: url('images/thumbnail.jpeg') center bottom / cover no-repeat;
     filter: grayscale(100%) contrast(1.02);
   }
+  #closing.in .closing-photo {
+    animation: closingKenBurns 16s ease-out both;
+  }
+  @keyframes closingKenBurns {
+    from { transform: scale(1.02); }
+    to { transform: scale(1.08); }
+  }
   #closing .closing-overlay {
     position: absolute;
     inset: 0;
@@ -815,7 +1084,7 @@
   #closing .closing-inner {
     position: relative;
     z-index: 2;
-    padding: 84px 36px 0;
+    padding: 52px 36px 0;
     text-align: left;
   }
   #closing .closing-msg {
@@ -844,13 +1113,31 @@
   /* a11y: respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .reveal { transition: opacity 0.4s ease; transform: none !important; }
-    .scroll-cue, .loader-mark, .pin-pulse { animation: none !important; }
+    .scroll-cue, .loader-glow, .loader-orbit, .loader-sparkle, .loader-heart, .loader-date, .loader-names, .loader-message, .pin-pulse { animation: none !important; }
+    .loader-heart { stroke-dashoffset: 0; }
+    .loader-date, .loader-names, .loader-message { opacity: 1; }
+    #ceremony.in .heart-day,
+    #closing.in .closing-photo { animation: none !important; }
+    #gallery .gallery-grid .g-item { opacity: 1; transform: none; animation: none !important; }
+    #journey .journey-track::before { transform: scaleY(1); animation: none !important; }
+    #journey .journey-moment { opacity: 1; transform: none; animation: none !important; }
   }
 </style>
 </head>
 <body>
 
-<div id="loader"><div class="loader-mark"></div></div>
+<div id="loader" aria-label="양채훈과 임선재의 결혼식 초대장">
+  <div class="loader-glow" aria-hidden="true"></div>
+  <div class="loader-orbit" aria-hidden="true"></div>
+  <span class="loader-sparkle one" aria-hidden="true">✦</span>
+  <span class="loader-sparkle two" aria-hidden="true">✦</span>
+  <div class="loader-intro">
+    <svg class="loader-heart" viewBox="0 0 32 30" aria-hidden="true"><path d="M16 26.5C16 26.5 3.5 18.8 3.5 10.6 3.5 6.4 6.7 3.3 10.2 3.3c2.4 0 4.5 1.4 5.8 3.5 1.3-2.1 3.4-3.5 5.8-3.5 3.5 0 6.7 3.1 6.7 7.3 0 8.2-12.5 15.9-12.5 15.9z"/></svg>
+    <p class="loader-date">2026. 10. 17</p>
+    <p class="loader-names">양채훈 <span class="loader-separator">♥</span> 임선재</p>
+    <p class="loader-message">여러분을 초대합니다</p>
+  </div>
+</div>
 
 <div id="app">
   <section id="opening">
@@ -863,7 +1150,7 @@
         <span class="cd-mins">만나요</span>
       </div>
       <div class="hero-footer">
-        <div class="hero-names">양채훈<span class="heart">&hearts;</span>임선재</div>
+        <div class="hero-names">양채훈 <span class="heart">&hearts;</span> 임선재</div>
         <div class="hero-date">2026년 10월 17일 토요일 오후 12시</div>
         <div class="hero-venue">양재 온누리교회 사랑홀</div>
       </div>
@@ -873,7 +1160,7 @@
   <nav class="site-nav" aria-label="섹션 바로가기">
     <a href="#ceremony">예식 안내</a>
     <a href="#location">오시는 길</a>
-    <a href="#gallery">사진첩</a>
+    <a href="#gallery">함께한 순간들</a>
     <a href="#gift">마음을 전하는 곳</a>
   </nav>
 
@@ -881,8 +1168,11 @@
 
     <!-- 1. 인삿말 + 신랑 신부 정보 -->
     <section class="section reveal invitation-block" id="greeting">
-      <div class="eyebrow-sm gold">INVITATION</div>
-      <div class="section-title">소중한 분들을 초대합니다</div>
+      <div class="invitation-icon" aria-hidden="true">
+       <img id="invitation-icon-img" src="images/divider_icon_1.png" alt="초대장 아이콘">
+      </div>
+      <!-- <div class="eyebrow-sm gold">INVITATION</div> -->
+      <div class="section-title">모시는 글</div>
       <p>
         같은 곳을 바라보며 걸어온 두 사람이<br>
         이제 같은 길을 걷기로 했습니다.
@@ -923,10 +1213,48 @@
       </div>
     </section>
 
+    <!-- 2. 두 사람의 여정 (예시: 사진과 문구를 실제 이야기로 교체해 주세요) -->
+    <section class="section reveal" id="journey">
+      <div class="invitation-icon" aria-hidden="true">
+        <img src="images/divider_icon_2.png" alt="">
+      </div>
+      <div class="section-title">두 사람의 여정</div>
+      <p class="journey-lead">우연처럼 시작된 만남은<br>어느새 서로의 가장 든든한 하루가 되었습니다.</p>
+      <div class="journey-track">
+        <article class="journey-moment">
+          <div class="journey-label">2024. 05. 02</div>
+          <h3>처음의 설렘</h3>
+          <p>낯선 첫 출근 날, 같은 팀의 동료로 만났습니다.<br>그 만남이 우리의 오늘로 이어질 줄은 몰랐습니다.</p>
+          <div class="journey-photo"><img src="images/photos/1.jpg" alt="두 사람이 처음 만난 시절의 추억" loading="lazy"></div>
+        </article>
+        <article class="journey-moment">
+          <div class="journey-label">2024. 12. 28</div>
+          <h3>서로의 마음</h3>
+          <p>조심스레 서로의 마음을 마주한 날,<br>우리는 연인이 되었습니다.</p>
+          <div class="journey-photo"><img src="images/photos/5.jpg" alt="마음을 확인한 두 사람의 추억" loading="lazy"></div>
+        </article>
+        <article class="journey-moment">
+          <div class="journey-label">2025. 08. 28</div>
+          <h3>함께 그린 내일</h3>
+          <p>당진의 바다를 함께 걷던 날,<br>처음으로 앞으로의 삶을 이야기했습니다.</p>
+          <div class="journey-photo"><img src="images/photos/9.jpg" alt="당진 여행의 추억" loading="lazy"></div>
+        </article>
+        <article class="journey-moment">
+          <div class="journey-label">2026. 03. 17</div>
+          <h3>새로운 계절의 시작</h3>
+          <p>기다리던 결혼예배 추첨에 당첨되며,<br>우리만의 결혼 준비를 차분히 시작했습니다.</p>
+          <div class="journey-photo"><img src="images/photos/13.jpg" alt="결혼 준비를 시작한 두 사람" loading="lazy"></div>
+        </article>
+      </div>
+    </section>
+
     <!-- 3. 예식 정보 -->
     <section class="section reveal" id="ceremony">
       <div class="ceremony-head">
-        <div class="eyebrow-sm">WEDDING DAY</div>
+        <div class="invitation-icon" aria-hidden="true">
+       <img id="invitation-icon-img" src="images/divider_icon_3.png" alt="초대장 아이콘">
+      </div>
+        <!-- <div class="eyebrow-sm">WEDDING DAY</div> -->
         <div class="section-title">예식 안내</div>
       </div>
 
@@ -951,7 +1279,7 @@
             </tr>
             <tr>
               <td class="sun">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
-              <td class="dday-cell"><span class="heart-day"><svg viewBox="0 0 32 30" aria-hidden="true"><path d="M16 26.5C16 26.5 3.5 18.8 3.5 10.6 3.5 6.4 6.7 3.3 10.2 3.3c2.4 0 4.5 1.4 5.8 3.5 1.3-2.1 3.4-3.5 5.8-3.5 3.5 0 6.7 3.1 6.7 7.3 0 8.2-12.5 15.9-12.5 15.9z"/></svg>17</span></td>
+              <td class="dday-cell"><span class="heart-day"><svg viewBox="0 0 32 30" aria-hidden="true"><path d="M16 26.5C16 26.5 3.5 18.8 3.5 10.6 3.5 6.4 6.7 3.3 10.2 3.3c2.4 0 4.5 1.4 5.8 3.5 1.3-2.1 3.4-3.5 5.8-3.5 3.5 0 6.7 3.1 6.7 7.3 0 8.2-12.5 15.9-12.5 15.9z"/></svg><span class="date-number">17</span></span></td>
             </tr>
             <tr>
               <td class="sun">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
@@ -972,7 +1300,10 @@
 
     <!-- 4. 오시는 길 -->
     <section class="section reveal" id="location">
-      <div class="eyebrow-sm">LOCATION</div>
+      <div class="invitation-icon" aria-hidden="true">
+        <img id="invitation-icon-img" src="images/divider_icon_1.png" alt="초대장 아이콘">
+      </div>
+      <!-- <div class="eyebrow-sm">LOCATION</div> -->
       <div class="section-title">오시는 길</div>
 
       <div class="map-frame">
@@ -987,48 +1318,51 @@
       </div>
 
       <div class="nav-cta-row">
-        <a class="kakao" id="kakao-link" href="#" target="_blank" rel="noopener">카카오맵</a>
-        <a class="naver" id="naver-link" href="#" target="_blank" rel="noopener">네이버맵</a>
-        <a class="tmap" id="tmap-link" href="#" target="_blank" rel="noopener">티맵</a>
+        <a class="kakao" id="kakao-link" href="#" target="_blank" rel="noopener">
+          <img class="map-app-icon" src="https://www.google.com/s2/favicons?domain=map.kakao.com&amp;sz=64" alt="" aria-hidden="true" referrerpolicy="no-referrer">카카오맵
+        </a>
+        <a class="naver" id="naver-link" href="#" target="_blank" rel="noopener">
+          <img class="map-app-icon" src="https://www.google.com/s2/favicons?domain=map.naver.com&amp;sz=64" alt="" aria-hidden="true" referrerpolicy="no-referrer">네이버맵
+        </a>
+        <a class="tmap" id="tmap-link" href="#" target="_blank" rel="noopener">
+          <img class="map-app-icon" src="https://www.google.com/s2/favicons?domain=www.tmap.co.kr&amp;sz=64" alt="" aria-hidden="true" referrerpolicy="no-referrer">티맵
+        </a>
       </div>
 
-      <div class="divider">
-        <svg viewBox="0 0 60 22"><path d="M4 19 Q 30 3 56 19"/><circle cx="30" cy="8.5" r="1.7"/></svg>
-      </div>
-
-      <div class="transport-info" style="margin-top:32px;">
+      <div class="transport-info">
         <div class="transport-item">
           <div class="icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><rect x="3" y="11" width="18" height="9" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="7.5" cy="17" r="1"/><circle cx="16.5" cy="17" r="1"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" aria-hidden="true"><path d="M5 16l1.5-5.2A2.5 2.5 0 0 1 8.9 9h6.2a2.5 2.5 0 0 1 2.4 1.8L19 16"/><path d="M3 16h18v3a1 1 0 0 1-1 1h-2v-2H6v2H4a1 1 0 0 1-1-1z"/><circle cx="7.5" cy="16" r="1"/><circle cx="16.5" cy="16" r="1"/></svg>
           </div>
           <div>
             <div class="t-title">자가용</div>
             <div class="t-desc">
-              내비게이션에 '양재온누리교회'를 입력해 주세요.<br>
-              건물 내 주차장을 이용하실 수 있습니다. 
+              내비게이션에 ‘양재온누리교회’ 검색<br>
+              교회 주차장 이용 가능
             </div>
           </div>
         </div>
         <div class="transport-item">
           <div class="icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><path d="M8 6v6M16 6v6M2 12h20M3 12l1.5 6h15L21 12M7 21h2M15 21h2"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" aria-hidden="true"><rect x="4" y="3" width="16" height="17" rx="3"/><path d="M4 10h16M8 7h.01M16 7h.01M8 20v2M16 20v2"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>
           </div>
           <div>
             <div class="t-title">셔틀버스</div>
             <div class="t-desc">
-              양재역 10번 출구 앞에서 예식 시작 1시간 전부터 셔틀버스가 운행됩니다.
+              양재역 10번 출구 앞<br>
+              예식 1시간 전부터 운행
             </div>
           </div>
         </div>
         <div class="transport-item">
           <div class="icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><path d="M4 16V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v9M4 16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M4 16l-1 4M20 16l1 4M9 6h6"/><circle cx="7.5" cy="13" r="1"/><circle cx="16.5" cy="13" r="1"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" aria-hidden="true"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 8h14M8 22l2-3M16 22l-2-3M9 12h.01M15 12h.01"/><path d="M8 16h8"/></svg>
           </div>
           <div>
             <div class="t-title">대중교통</div>
             <div class="t-desc">
-              양재역 9번 출구에서 도보 약 13분 거리입니다.<br>
-              버스는 일동제약/말죽거리사거리 정류장에서 하차 후 도보로 이동하실 수 있습니다.
+              양재역 9번 출구에서 도보 약 13분<br>
+              버스는 일동제약·말죽거리사거리 하차
             </div>
           </div>
         </div>
@@ -1037,8 +1371,11 @@
 
     <!-- 5. 갤러리 -->
     <section class="section reveal" id="gallery">
-      <div class="eyebrow-sm">GALLERY</div>
-      <div class="section-title">두 사람의 순간들</div>
+      <div class="invitation-icon" aria-hidden="true">
+        <img id="invitation-icon-img" src="images/divider_icon_3.png" alt="초대장 아이콘">
+      </div>
+      <!-- <div class="eyebrow-sm">GALLERY</div> -->
+      <div class="section-title">함께한 순간들</div>
       <div class="gallery-grid" id="gallery-grid">
         <div class="g-item" data-idx="1"><img src="images/photos/1.jpg" alt="웨딩 사진 1" loading="lazy"></div>
         <div class="g-item" data-idx="2"><img src="images/photos/2.jpg" alt="웨딩 사진 2" loading="lazy"></div>
@@ -1057,7 +1394,10 @@
 
     <!-- 6. 안내 사항 -->
     <section class="section reveal" id="notice">
-      <div class="eyebrow-sm">NOTICE</div>
+      <div class="invitation-icon" aria-hidden="true">
+        <img id="invitation-icon-img" src="images/divider_icon_1.png" alt="초대장 아이콘">
+      </div>
+      <!-- <div class="eyebrow-sm">NOTICE</div> -->
       <div class="section-title">안내 사항</div>
       <div class="notice-box">
         <div class="notice-item">
@@ -1077,16 +1417,18 @@
 
     <!-- 7. 마음 전하는 곳 -->
     <section class="section reveal" id="gift">
-      <div class="eyebrow-sm">WITH LOVE</div>
+      <div class="invitation-icon" aria-hidden="true">
+        <img id="invitation-icon-img" src="images/divider_icon_1.png" alt="초대장 아이콘">
+      </div>
+      <!-- <div class="eyebrow-sm">WITH LOVE</div> -->
       <div class="section-title">마음 전하는 곳</div>
       <p class="gift-intro">
         멀리서 보내주시는 따뜻한 축하의 마음도<br>소중히 깊이 간직하겠습니다.
       </p>
       <div class="accordion" id="gift-accordion">
         <div class="accordion-item">
-          <div class="accordion-head" data-target="acc-groom">
+          <div class="accordion-head">
             <span class="side-label">신랑측</span>
-            <span class="chev"></span>
           </div>
           <div class="accordion-body" id="acc-groom">
             <div class="account-row">
@@ -1100,9 +1442,8 @@
           </div>
         </div>
         <div class="accordion-item">
-          <div class="accordion-head" data-target="acc-bride">
+          <div class="accordion-head">
             <span class="side-label">신부측</span>
-            <span class="chev"></span>
           </div>
           <div class="accordion-body" id="acc-bride">
             <div class="account-row">
@@ -1154,9 +1495,10 @@
 
 <script>
   window.addEventListener('load', () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setTimeout(() => {
       document.getElementById('loader').classList.add('hide');
-    }, 400);
+    }, reduceMotion ? 150 : 3000);
   });
 
   // ---- Hero countdown (N일 N시간 N분 후 만나요) ----
@@ -1602,23 +1944,6 @@
     if (e.target === lightbox) closeLightbox();
   });
 
-  // ---- Accordion ----
-  document.querySelectorAll('.accordion-head').forEach(head => {
-    head.addEventListener('click', () => {
-      const item = head.parentElement;
-      const body = document.getElementById(head.dataset.target);
-      const isOpen = item.classList.contains('open');
-      // close all
-      document.querySelectorAll('.accordion-item').forEach(i => {
-        i.classList.remove('open');
-        i.querySelector('.accordion-body').style.maxHeight = null;
-      });
-      if (!isOpen) {
-        item.classList.add('open');
-        body.style.maxHeight = body.scrollHeight + 'px';
-      }
-    });
-  });
 </script>
 </body>
 </html>
