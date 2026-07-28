@@ -280,8 +280,8 @@
 
   /* ===== Hero typography & layout only ===== */
   #opening .hero-inner { padding:max(72px,9vh) 32px max(24px,env(safe-area-inset-bottom)); }
-  #opening .hero-countdown { position:relative; width:min(62vw,220px); padding-left:20px; border-left:none; margin-top:12px; }
-  #opening .hero-countdown::before { content:""; position:absolute; left:0; top:7px; width:1px; height:124px; background:rgba(255,255,255,.72); }
+  #opening .hero-countdown { position:relative; width:min(62vw,220px); padding-left:0; border-left:none; margin-top:12px; }
+  #opening .hero-countdown::before { content:none; }
   #opening .countdown-title { font-size:13px; font-weight:400; line-height:1.5; letter-spacing:.1em; color:rgba(255,255,255,.92); white-space:nowrap; }
   #opening .countdown-days { display:flex; align-items:flex-end; gap:7px; margin:8px 0 11px; }
   #opening .countdown-days .cd-days { font-size:clamp(78px,21vw,96px); font-weight:300; line-height:.95; letter-spacing:-.045em; }
@@ -296,7 +296,6 @@
   #opening .countdown-title { font-weight:500; color:rgba(255,255,255,.96); }
   #opening .countdown-time .countdown-unit,#opening .countdown-days .countdown-unit { color:rgba(255,255,255,.95); }
   #opening .countdown-rule { background:rgba(255,255,255,.62); }
-  #opening .hero-countdown::before { background:rgba(255,255,255,.78); }
   #opening .hero-footer { text-align:center; transform:translateY(-10px); animation:none; }
   #opening .hero-names { display:flex; align-items:center; justify-content:center; gap:12px; font-size:clamp(17px,4.5vw,20px); font-weight:400; line-height:1.4; letter-spacing:.1em; }
   #opening .hero-names .name-divider { width:auto; height:27px; object-fit:contain; opacity:.86; }
@@ -995,7 +994,7 @@
   #closing .closing-photo {
     position: absolute;
     inset: 0;
-    background: url('images/thumbnail.jpeg') center bottom / cover no-repeat;
+    background: url('images/closing_image.png') center bottom / cover no-repeat;
     filter: grayscale(100%) contrast(1.02);
   }
   #closing.in .closing-photo {
@@ -1018,7 +1017,7 @@
   #closing .closing-inner {
     position: relative;
     z-index: 2;
-    padding: 52px 36px 0;
+    padding: 80px 36px 0;
     text-align: left;
   }
   #closing .closing-msg {
