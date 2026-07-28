@@ -1647,12 +1647,79 @@
   const venueLat = 37.4795;
   const venueLng = 127.0340;
 
-  document.getElementById('kakao-link').href =
-    `https://map.kakao.com/link/map/${venueName},${venueLat},${venueLng}`;
-  document.getElementById('naver-link').href =
-    `https://map.naver.com/p/search/${venueName}`;
-  document.getElementById('tmap-link').href =
-    `tmap://search?name=${venueName}`;
+  const mapLinks = {
+    kakao: {
+      scheme: `kakaomap://search?q=${venueName}&p=${venueLat},${venueLng}`,
+      androidPackage: 'net.daum.android.map',
+      androidPath: `search?q=${venueName}&p=${venueLat},${venueLng}`,
+      playStore: 'https://play.google.com/store/apps/details?id=net.daum.android.map',
+      appStore: 'https://apps.apple.com/kr/app/id304608425',
+      web: `https://map.kakao.com/link/map/${venueName},${venueLat},${venueLng}`
+    },
+    naver: {
+      scheme: `nmap://place?lat=${venueLat}&lng=${venueLng}&name=${venueName}&appname=${encodeURIComponent(location.origin + location.pathname)}`,
+      androidPackage: 'com.nhn.android.nmap',
+      androidPath: `place?lat=${venueLat}&lng=${venueLng}&name=${venueName}&appname=${encodeURIComponent(location.origin + location.pathname)}`,
+      playStore: 'https://play.google.com/store/apps/details?id=com.nhn.android.nmap',
+      appStore: 'https://apps.apple.com/kr/app/id311867728',
+      web: `https://map.naver.com/p/search/${venueName}`
+    },
+    tmap: {
+      scheme: `tmap://search?name=${venueName}`,
+      androidPackage: 'com.skt.tmap.ku',
+      androidPath: `search?name=${venueName}`,
+      playStore: 'https://play.google.com/store/apps/details?id=com.skt.tmap.ku',
+      appStore: 'https://apps.apple.com/kr/app/id431589174',
+      web: `https://www.tmap.co.kr/tmap2/mobile/route.jsp?name=${venueName}`
+    }
+  };
+
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  function configureMapAppLink(id, config) {
+    const link = document.getElementById(id);
+
+    if (isAndroid) {
+      link.removeAttribute('target');
+      link.href =
+        `intent://${config.androidPath}` +
+        `#Intent;scheme=${config.scheme.split(':')[0]};` +
+        `package=${config.androidPackage};` +
+        `S.browser_fallback_url=${encodeURIComponent(config.playStore)};end`;
+      return;
+    }
+
+    if (isIOS) {
+      link.removeAttribute('target');
+      link.href = config.scheme;
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        let fallbackTimer;
+
+        const cancelFallback = () => {
+          if (document.hidden) {
+            clearTimeout(fallbackTimer);
+            document.removeEventListener('visibilitychange', cancelFallback);
+          }
+        };
+
+        document.addEventListener('visibilitychange', cancelFallback);
+        window.location.href = config.scheme;
+        fallbackTimer = window.setTimeout(() => {
+          document.removeEventListener('visibilitychange', cancelFallback);
+          if (!document.hidden) window.location.href = config.appStore;
+        }, 1400);
+      });
+      return;
+    }
+
+    link.href = config.web;
+  }
+
+  configureMapAppLink('kakao-link', mapLinks.kakao);
+  configureMapAppLink('naver-link', mapLinks.naver);
+  configureMapAppLink('tmap-link', mapLinks.tmap);
 
   // ---- Gallery lightbox ----
   const lightbox = document.getElementById('lightbox');
